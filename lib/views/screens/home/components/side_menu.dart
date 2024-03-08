@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:paperswift/controllers/auth_controller.dart';
 
 class SideMenu extends StatelessWidget {
-  const SideMenu({
-    Key? key,
-  }) : super(key: key);
+
+  AuthController authController=Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
+
     return Drawer(
       child: ListView(
         children: [
@@ -53,6 +55,13 @@ class SideMenu extends StatelessWidget {
             title: "Settings",
             svgSrc: "assets/icons/menu_setting.svg",
             press: () {},
+          ),
+          DrawerListTile(
+            title: "Logout",
+            svgSrc: "assets/icons/menu_setting.svg",
+            press: () {
+              authController.logout();
+            },
           ),
         ],
       ),

@@ -54,7 +54,8 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     try {
       isLoading.value = true;
-      String token = storage.read(key: 'token').toString();
+      String? token = await storage.read(key: 'token');
+      log.i("Token: $token");
 
       var url = Uri.parse('${baseUrl}logout/');
       var headers = {
@@ -69,6 +70,8 @@ class AuthController extends GetxController {
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body);
         log.i(jsonResponse['detail']);
+        Get.offAllNamed(AppRoutes.login);
+
       } else {
         // Handle error responses here
         log.w('Request failed with status: ${response.statusCode}.');
