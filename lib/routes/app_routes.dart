@@ -3,4 +3,5 @@ class AppRoutes {
   static const profile = '/profile';
   static const home = "/home";
   static const settings = "/settings";
+  static const splash = "/splash";
 }

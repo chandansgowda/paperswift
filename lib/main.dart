@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:paperswift/controllers/auth_controller.dart';
 import 'package:paperswift/routes/app_pages.dart';
 import 'package:paperswift/routes/app_routes.dart';
 import 'package:paperswift/utils/constants.dart';
+import 'package:paperswift/views/screens/home/login_screen.dart';
+import 'views/screens/home/home_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
 
+  AuthController authController =Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -22,7 +26,7 @@ class MyApp extends StatelessWidget {
             .apply(bodyColor: Colors.white),
         canvasColor: secondaryColor,
       ),
-      initialRoute: AppRoutes.login,
+      initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
     );
   }

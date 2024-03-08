@@ -12,9 +12,20 @@ class AuthController extends GetxController {
   RxBool isLoading = false.obs;
 
   @override
-  void onInit() {
+  void onInit() async{
     storage = const FlutterSecureStorage();
+    await checkToken();
     super.onInit();
+  }
+
+  Future checkToken() async{
+    String? token = await storage.read(key: 'token');
+    if(token!=null){
+      Get.toNamed(AppRoutes.home);
+    }
+    else{
+      Get.toNamed(AppRoutes.login);
+    }
   }
 
   Future<void> login(String username,String email, String password,String otp) async {
