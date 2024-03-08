@@ -36,12 +36,12 @@ class MyFiles extends StatelessWidget {
         ),
         SizedBox(height: defaultPadding),
         Responsive(
-          mobile: FileInfoCardGridView(
+          mobile: ExaminationTileGridView(
             crossAxisCount: _size.width < 650 ? 2 : 4,
             childAspectRatio: _size.width < 650 ? 1.3 : 1,
           ),
-          tablet: FileInfoCardGridView(),
-          desktop: FileInfoCardGridView(
+          tablet: ExaminationTileGridView(),
+          desktop: ExaminationTileGridView(
             childAspectRatio: _size.width < 1400 ? 1.1 : 1.4,
           ),
         ),
@@ -50,8 +50,8 @@ class MyFiles extends StatelessWidget {
   }
 }
 
-class FileInfoCardGridView extends StatelessWidget {
-  const FileInfoCardGridView({
+class ExaminationTileGridView extends StatelessWidget {
+  const ExaminationTileGridView({
     Key? key,
     this.crossAxisCount = 4,
     this.childAspectRatio = 1,
@@ -62,6 +62,7 @@ class FileInfoCardGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List Exams=[{'name':'5th sem exam','type':'Suppli','Date':'22/03/23'},{'name':'7th sem exam','type':'Regular','Date':'12/03/23'},];
     return GridView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
@@ -72,7 +73,7 @@ class FileInfoCardGridView extends StatelessWidget {
         mainAxisSpacing: defaultPadding,
         childAspectRatio: childAspectRatio,
       ),
-      itemBuilder: (context, index) => FileInfoCard(info: "deletethis"),
+      itemBuilder: (context, index) => FileInfoCard(title: Exams[index]['name'],examType: Exams[index]['type'],date: Exams[index]['date'],),
     );
   }
 }

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:paperswift/utils/constants.dart';
 
-import '../../../../utils/constants.dart';
-
-class FileInfoCard extends StatelessWidget {
+class ExaminationTile extends StatelessWidget {
   final String title;
   final String examType;
   final String date;
 
-  const FileInfoCard({super.key, required this.title, required this.examType, required this.date});
+  const ExaminationTile({super.key, required this.title, required this.examType, required this.date});
 
   @override
   Widget build(BuildContext context) {
@@ -25,44 +24,32 @@ class FileInfoCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: EdgeInsets.all(defaultPadding * 0.75),
-                height: 40,
-                width: 40,
-                decoration: BoxDecoration(
-                  color: Colors.blue.withOpacity(0.1),
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                ),
-                child: SvgPicture.asset(
-                  "svgSrc!",
-                  colorFilter: ColorFilter.mode(
-                      Colors.black, BlendMode.srcIn),
-                ),
+              Text(
+                title,
+                maxLines: 1,
+                style: TextStyle(fontSize: 25),
+                overflow: TextOverflow.ellipsis,
               ),
               Icon(Icons.more_vert, color: Colors.white54)
             ],
           ),
           Text(
-            title,
+            examType+" Exam",
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-          ),
-          ProgressLine(
-            color: Colors.blue,
-            percentage: 23,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "2 Files",
+                "Deadline : ",
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall!
                     .copyWith(color: Colors.white70),
               ),
               Text(
-                "totalStorage!",
+                date,
                 style: Theme.of(context)
                     .textTheme
                     .bodySmall!
@@ -112,3 +99,4 @@ class ProgressLine extends StatelessWidget {
     );
   }
 }
+

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paperswift/views/screens/dashboard/components/examination_tile.dart';
 
 import '../../../../utils/constants.dart';
 import '../../../../utils/responsive.dart';
@@ -18,7 +19,7 @@ class MyFiles extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "My Files",
+              "Examinations",
               style: Theme.of(context).textTheme.titleMedium,
             ),
             ElevatedButton.icon(
@@ -31,7 +32,7 @@ class MyFiles extends StatelessWidget {
               ),
               onPressed: () {},
               icon: Icon(Icons.add),
-              label: Text("Add New"),
+              label: Text("Add New Examination"),
             ),
           ],
         ),
@@ -63,17 +64,24 @@ class FileInfoCardGridView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    List Exams = [
+      {'name': '5th sem', 'type': 'Supplementary', 'Date': '22/03/23'},
+      {'name': '7th sem', 'type': 'Regular', 'Date': '12/03/23'},
+    ];
     return GridView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: 4,
+      itemCount: Exams.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
         crossAxisSpacing: defaultPadding,
         mainAxisSpacing: defaultPadding,
         childAspectRatio: childAspectRatio,
       ),
-      itemBuilder: (context, index) => FileInfoCard(info: "deletethis"),
+      itemBuilder: (context, index) => ExaminationTile(
+          title: Exams[index]['name'],
+          examType: Exams[index]['type'],
+          date: Exams[index]['Date']),
     );
   }
 }
