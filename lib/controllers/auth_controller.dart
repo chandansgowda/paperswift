@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
+import 'package:paperswift/routes/app_routes.dart';
 import 'package:paperswift/utils/constants.dart';
 
 class AuthController extends GetxController {
@@ -16,14 +17,16 @@ class AuthController extends GetxController {
     super.onInit();
   }
 
-  Future<void> login(String username, String email, String password) async {
+  Future<void> login(String username,String email, String password,String otp) async {
     try {
       var url = Uri.parse('${baseUrl}login/');
       var headers = {'accept': 'application/json', 'Content-Type': 'application/json'};
       var body = json.encode({
-        'username': username,
-        'email': email,
-        'password': password,
+        //TODO:Change it to dynamic
+        'username':"admin",
+        'otp':"1222",
+        'email': "admin@admin.com",
+        'password':'123',
       });
 
       isLoading.value = true;
@@ -35,8 +38,8 @@ class AuthController extends GetxController {
 
         // Store token in secure-storage
         await storage.write(key: "token", value: token);
-
         log.i("Login successful. Stored Token: $token");
+        Get.toNamed(AppRoutes.home);
       } else {
         // Handle error responses here
         log.w('Request failed with status: ${response.statusCode}.');
