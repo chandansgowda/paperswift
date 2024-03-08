@@ -1,60 +1,56 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
 import 'package:paperswift/routes/app_routes.dart';
-import 'package:paperswift/utils/constants.dart';
+import 'package:paperswift/services/api_service.dart';
 
 class AuthController extends GetxController {
   late FlutterSecureStorage storage;
   Logger log = Logger();
+  late ApiService api;
   RxBool isLoading = false.obs;
 
   @override
-  void onInit() async{
+  void onInit() async {
     storage = const FlutterSecureStorage();
     await checkToken();
     super.onInit();
   }
 
-  Future checkToken() async{
+  Future checkToken() async {
     String? token = await storage.read(key: 'token');
-    if(token!=null){
+    if (token != null) {
+      api = ApiService(token: token);
       Get.toNamed(AppRoutes.home);
-    }
-    else{
+    } else {
+      api = ApiService();
       Get.toNamed(AppRoutes.login);
     }
   }
 
-  Future<void> login(String username,String email, String password,String otp) async {
+  Future<void> login(String username, String email, String password, String otp) async {
     try {
-      var url = Uri.parse('${baseUrl}login/');
-      var headers = {'accept': 'application/json', 'Content-Type': 'application/json'};
+      isLoading.value = true;
+
       var body = json.encode({
         //TODO:Change it to dynamic
-        'username':"admin",
-        'otp':"1222",
+        'username': "admin",
+        'otp': "1222",
         'email': "admin@admin.com",
-        'password':'123',
+        'password': '123',
       });
 
-      isLoading.value = true;
-      var response = await http.post(url, headers: headers, body: body);
+      String? token = await api.login(body);
 
-      if (response.statusCode == 200) {
-        var jsonResponse = json.decode(response.body);
-        String token = jsonResponse['key'];
-
-        // Store token in secure-storage
+      if (token != null) {
+        api = ApiService(token: token);
         await storage.write(key: "token", value: token);
         log.i("Login successful. Stored Token: $token");
-        Get.toNamed(AppRoutes.home);
-      } else {
-        // Handle error responses here
-        log.w('Request failed with status: ${response.statusCode}.');
       }
+
+      Get.toNamed(AppRoutes.home);
+
     } catch (error) {
       log.e('Error occurred while logging in: $error');
     } finally {
@@ -68,25 +64,10 @@ class AuthController extends GetxController {
       String? token = await storage.read(key: 'token');
       log.i("Token: $token");
 
-      var url = Uri.parse('${baseUrl}logout/');
-      var headers = {
-        'Authorization': 'Token $token',
-        'accept': 'application/json',
-      };
-
-      // Clear token value
       storage.delete(key: 'token');
-      var response = await http.post(url, headers: headers);
-
-      if (response.statusCode == 200) {
-        var jsonResponse = json.decode(response.body);
-        log.i(jsonResponse['detail']);
-        Get.offAllNamed(AppRoutes.login);
-
-      } else {
-        // Handle error responses here
-        log.w('Request failed with status: ${response.statusCode}.');
-      }
+      var response = await api.logout();
+      //TODO: Handle error in api call
+      Get.offAllNamed(AppRoutes.login);
     } catch (error) {
       log.e('Error occurred: $error');
     } finally {

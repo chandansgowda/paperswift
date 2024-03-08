@@ -15,7 +15,6 @@ void main() {
 
 class MyApp extends StatelessWidget {
 
-  AuthController authController =Get.put(AuthController());
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

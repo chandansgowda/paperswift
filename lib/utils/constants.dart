@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // API
-String baseUrl = "https://paperswiftsjcetest.pythonanywhere.com/auth/";
+String baseUrl = "https://paperswiftsjcetest.pythonanywhere.com/";
 
 // Theme
 const primaryColor = Color(0xFF2697FF);
