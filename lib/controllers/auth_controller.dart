@@ -50,4 +50,33 @@ class AuthController extends GetxController {
       isLoading.value = false;
     }
   }
+
+  Future<void> logout() async {
+    try {
+      isLoading.value = true;
+      String token = storage.read(key: 'token').toString();
+
+      var url = Uri.parse('${baseUrl}logout/');
+      var headers = {
+        'Authorization': 'Token $token',
+        'accept': 'application/json',
+      };
+
+      // Clear token value
+      storage.delete(key: 'token');
+      var response = await http.post(url, headers: headers);
+
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body);
+        log.i(jsonResponse['detail']);
+      } else {
+        // Handle error responses here
+        log.w('Request failed with status: ${response.statusCode}.');
+      }
+    } catch (error) {
+      log.e('Error occurred: $error');
+    } finally {
+      isLoading.value = false;
+    }
+  }
 }
