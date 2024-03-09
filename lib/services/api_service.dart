@@ -59,4 +59,16 @@ class ApiService {
       return false;
     }
   }
+
+  Future<dynamic> getAllExams() async {
+    final response = await dio.get('management/exams/');
+    if (response.statusCode == 200) {
+      print(response.data);
+      // final List<dynamic> data = json.decode(response.data);
+      return response.data;
+      // return data.map((item) => item as Map<String, dynamic>).toList();
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 }

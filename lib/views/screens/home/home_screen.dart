@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paperswift/controllers/exam_controller.dart';
 import 'package:paperswift/controllers/screen_controller.dart';
 import 'package:paperswift/views/screens/exam/exam_details_screen.dart';
 
@@ -11,6 +12,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ScreenController screenController=Get.put(ScreenController());
+    ExamController examController=Get.put(ExamController());
     return Scaffold(
       drawer: SideMenu(),
       body: SafeArea(
@@ -30,7 +32,9 @@ class HomeScreen extends StatelessWidget {
               child: Obx((){
                 switch(screenController.screenIndex.value){
                   case 0:return DashboardScreen();
-                  default:return Center(child: Text("Dummy screen"),);
+                  default:return Center(child: Obx((){
+                    return Text(examController.exams.toString());
+                  }),);
                 }
             }),
             ),
