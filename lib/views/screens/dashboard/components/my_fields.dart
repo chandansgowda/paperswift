@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:paperswift/controllers/exam_controller.dart';
 import 'package:paperswift/views/screens/dashboard/components/examination_tile.dart';
 
 import '../../../../utils/constants.dart';
@@ -6,10 +9,10 @@ import '../../../../utils/responsive.dart';
 import 'file_info_card.dart';
 
 class MyFiles extends StatelessWidget {
-  const MyFiles({
+   MyFiles({
     Key? key,
   }) : super(key: key);
-
+  ExamController examController=Get.put(ExamController());
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
@@ -32,7 +35,7 @@ class MyFiles extends StatelessWidget {
               ),
               onPressed: () {},
               icon: Icon(Icons.add),
-              label: Text("Add New Examination"),
+              label: Text("Add New Exam"),
             ),
           ],
         ),
@@ -53,7 +56,7 @@ class MyFiles extends StatelessWidget {
 }
 
 class FileInfoCardGridView extends StatelessWidget {
-  const FileInfoCardGridView({
+  FileInfoCardGridView({
     Key? key,
     this.crossAxisCount = 4,
     this.childAspectRatio = 1,
@@ -61,7 +64,7 @@ class FileInfoCardGridView extends StatelessWidget {
 
   final int crossAxisCount;
   final double childAspectRatio;
-
+  ExamController examController=Get.find<ExamController>();
   @override
   Widget build(BuildContext context) {
     List Exams = [
@@ -71,18 +74,18 @@ class FileInfoCardGridView extends StatelessWidget {
     return GridView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: Exams.length,
+      itemCount: examController.exams.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
         crossAxisSpacing: defaultPadding,
         mainAxisSpacing: defaultPadding,
         childAspectRatio: childAspectRatio,
       ),
-      itemBuilder: (context, index) => ExaminationTile(
-          title: Exams[index]['name'],
-          examType: Exams[index]['type'],
-          date: Exams[index]['Date'],
-      degree: Exams[index]['degree'],),
+      itemBuilder: (context, index) => Obx(() => ExaminationTile(
+        title: examController.exams[index].sem.toString(),
+        examType: examController.exams[index].isSupplementary?"Supplementary":"Regular",
+        date: DateFormat('yyyy-MM-DD').format(examController.exams[index].paperSubmissionDeadline),
+        degree: examController.exams[index].degree,),)
     );
   }
 }

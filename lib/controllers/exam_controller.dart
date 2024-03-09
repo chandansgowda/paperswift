@@ -22,7 +22,6 @@ class ExamController extends GetxController{
 
   @override
   void onInit() async {
-    log.i("onInit Called");
     storage = const FlutterSecureStorage();
     String? token = await storage.read(key: 'token');
     api=ApiService(token: token);
@@ -32,20 +31,16 @@ class ExamController extends GetxController{
 
   Future<void> fetchData() async {
     try {
-      log.i("Fetch data called");
+      List<Examination> exams_temp=[];
       dynamic response =await api.getAllExams();
-
-      // if (response.statusCode == 200) {
-      //   print(response);
-      //   print(response.data);
-      //   // final List<dynamic> data = json.decode(response.data);
-      //   exams.value=response.data.map((e) => Examination.fromJson(e));
-      //   // return data.map((item) => item as Map<String, dynamic>).toList();
-      // } else {
-      //   throw Exception('Failed to load data');
-      // }
+      for(dynamic data in response){
+       exams_temp.add(Examination.fromJson(data));
+       exams_temp.add(Examination.fromJson(data));
+       exams_temp.add(Examination.fromJson(data));
+      }
+      exams.value=exams_temp;
     } catch (e) {
-      throw Exception('Failed to connect to server');
+      throw Exception(e);
     }
   }
 
