@@ -2,31 +2,24 @@ import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:logger/logger.dart';
-import 'package:paperswift/routes/app_routes.dart';
-import 'package:paperswift/services/api_service.dart';
+import 'package:paperswift/controllers/main_controller.dart';
+
+import '../routes/app_routes.dart';
+import '../services/api_service.dart';
 
 class AuthController extends GetxController {
   late FlutterSecureStorage storage;
-  Logger log = Logger();
+  late Logger log;
   late ApiService api;
   RxBool isLoading = false.obs;
 
   @override
   void onInit() async {
-    storage = const FlutterSecureStorage();
-    await checkToken();
+    MainController mainController = Get.find<MainController>();
+    storage = mainController.storage;
+    api = mainController.api;
+    log = mainController.log;
     super.onInit();
-  }
-
-  Future checkToken() async {
-    String? token = await storage.read(key: 'token');
-    if (token != null) {
-      api = ApiService(token: token);
-      Get.toNamed(AppRoutes.home);
-    } else {
-      api = ApiService();
-      Get.toNamed(AppRoutes.login);
-    }
   }
 
   Future<void> login(String username, String email, String password, String otp) async {
@@ -65,7 +58,7 @@ class AuthController extends GetxController {
       log.i("Token: $token");
 
       storage.delete(key: 'token');
-      var response = await api.logout();
+      await api.logout();
       //TODO: Handle error in api call
       Get.offAllNamed(AppRoutes.login);
     } catch (error) {
