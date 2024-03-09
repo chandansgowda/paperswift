@@ -190,35 +190,25 @@ class FileInfoCardGridView extends StatelessWidget {
   ExamController examController = Get.find<ExamController>();
   @override
   Widget build(BuildContext context) {
-    List Exams = [
-      {
-        'name': '5',
-        'type': 'Supplementary',
-        'Date': '22/03/23',
-        'degree': 'BE'
-      },
-      {'name': '7', 'type': 'Regular', 'Date': '12/03/23', 'degree': 'BCA'},
-    ];
-    return GridView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: examController.exams.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
-          crossAxisSpacing: defaultPadding,
-          mainAxisSpacing: defaultPadding,
-          childAspectRatio: childAspectRatio,
-        ),
-        itemBuilder: (context, index) => Obx(
-              () => ExaminationTile(
-                title: examController.exams[index].sem.toString(),
-                examType: examController.exams[index].isSupplementary
-                    ? "Supplementary"
-                    : "Regular",
-                date: DateFormat('yyyy-MM-DD').format(
-                    examController.exams[index].paperSubmissionDeadline),
-                degree: examController.exams[index].degree,
-              ),
-            ));
+    return Obx(() => GridView.builder(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: examController.exams.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
+        crossAxisSpacing: defaultPadding,
+        mainAxisSpacing: defaultPadding,
+        childAspectRatio: childAspectRatio,
+      ),
+      itemBuilder: (context, index) =>ExaminationTile(
+        title: examController.exams[index].sem.toString(),
+        examType: examController.exams[index].isSupplementary
+            ? "Supplementary"
+            : "Regular",
+        date: DateFormat('yyyy-MM-DD').format(
+            examController.exams[index].paperSubmissionDeadline),
+        degree: examController.exams[index].degree,
+      ),
+    ));
   }
 }
