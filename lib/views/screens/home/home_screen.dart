@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:paperswift/controllers/screen_controller.dart';
+import 'package:paperswift/views/screens/exam/exam_details_screen.dart';
 
 import '../../../utils/responsive.dart';
 import '../dashboard/dashboard_screen.dart';
@@ -7,6 +10,7 @@ import 'components/side_menu.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    ScreenController screenController=Get.put(ScreenController());
     return Scaffold(
       drawer: SideMenu(),
       body: SafeArea(
@@ -23,7 +27,12 @@ class HomeScreen extends StatelessWidget {
             Expanded(
               // It takes 5/6 part of the screen
               flex: 5,
-              child: DashboardScreen(),
+              child: Obx((){
+                switch(screenController.screenIndex.value){
+                  case 0:return DashboardScreen();
+                  default:return Center(child: Text("Dummy screen"),);
+                }
+            }),
             ),
           ],
         ),

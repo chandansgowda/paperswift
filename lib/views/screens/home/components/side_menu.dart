@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:paperswift/controllers/auth_controller.dart';
+import 'package:paperswift/controllers/screen_controller.dart';
 
 class SideMenu extends StatelessWidget {
 
   AuthController authController=Get.put(AuthController());
+  ScreenController screenController=Get.put(ScreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -19,42 +21,58 @@ class SideMenu extends StatelessWidget {
           DrawerListTile(
             title: "Dashboard",
             svgSrc: "assets/icons/menu_dashboard.svg",
-            press: () {},
+            press: () {
+              screenController.screenIndex.value=0;
+            },
           ),
           DrawerListTile(
             title: "Transaction",
             svgSrc: "assets/icons/menu_tran.svg",
-            press: () {},
+            press: () {
+              screenController.screenIndex.value=1;
+            },
           ),
           DrawerListTile(
             title: "Task",
             svgSrc: "assets/icons/menu_task.svg",
-            press: () {},
+            press: () {
+              screenController.screenIndex.value=2;
+            },
           ),
           DrawerListTile(
             title: "Documents",
             svgSrc: "assets/icons/menu_doc.svg",
-            press: () {},
+            press: () {
+              screenController.screenIndex.value=3;
+            },
           ),
           DrawerListTile(
             title: "Store",
             svgSrc: "assets/icons/menu_store.svg",
-            press: () {},
+            press: () {
+              screenController.screenIndex.value=4;
+            },
           ),
           DrawerListTile(
             title: "Notification",
             svgSrc: "assets/icons/menu_notification.svg",
-            press: () {},
+            press: () {
+              screenController.screenIndex.value=5;
+            },
           ),
           DrawerListTile(
             title: "Profile",
             svgSrc: "assets/icons/menu_profile.svg",
-            press: () {},
+            press: () {
+              screenController.screenIndex.value=6;
+            },
           ),
           DrawerListTile(
             title: "Settings",
             svgSrc: "assets/icons/menu_setting.svg",
-            press: () {},
+            press: () {
+              screenController.screenIndex.value=7;
+            },
           ),
           DrawerListTile(
             title: "Logout",

@@ -65,8 +65,8 @@ class FileInfoCardGridView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List Exams = [
-      {'name': '5th sem', 'type': 'Supplementary', 'Date': '22/03/23'},
-      {'name': '7th sem', 'type': 'Regular', 'Date': '12/03/23'},
+      {'name': '5', 'type': 'Supplementary', 'Date': '22/03/23','degree':'BE'},
+      {'name': '7', 'type': 'Regular', 'Date': '12/03/23','degree':'BCA'},
     ];
     return GridView.builder(
       physics: NeverScrollableScrollPhysics(),
@@ -81,7 +81,8 @@ class FileInfoCardGridView extends StatelessWidget {
       itemBuilder: (context, index) => ExaminationTile(
           title: Exams[index]['name'],
           examType: Exams[index]['type'],
-          date: Exams[index]['Date']),
+          date: Exams[index]['Date'],
+      degree: Exams[index]['degree'],),
     );
   }
 }

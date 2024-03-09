@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:paperswift/views/screens/exam/exam_details_screen.dart';
 import 'package:paperswift/views/screens/home/login_screen.dart';
 import 'package:paperswift/views/screens/home/splash_screen.dart';
 
@@ -19,6 +20,10 @@ class AppPages {
     GetPage(
       name: AppRoutes.splash,
       page: () => SplashScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.examDetails,
+      page: () => ExamDetailsScreen(),
     ),
   ];
 }

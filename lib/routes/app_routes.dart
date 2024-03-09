@@ -4,4 +4,5 @@ class AppRoutes {
   static const home = "/home";
   static const settings = "/settings";
   static const splash = "/splash";
+  static const examDetails = "/exam-details";
 }
