@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paperswift/controllers/exam_controller.dart';
 import 'package:paperswift/controllers/screen_controller.dart';
-import 'package:paperswift/views/screens/exam/exam_details_screen.dart';
 
 import '../../../utils/responsive.dart';
 import '../dashboard/dashboard_screen.dart';
