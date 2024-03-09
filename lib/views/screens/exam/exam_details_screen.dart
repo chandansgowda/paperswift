@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:paperswift/routes/app_routes.dart';
 import 'package:paperswift/views/screens/dashboard/components/recent_files.dart';
 import 'package:paperswift/views/screens/dashboard/components/storage_details.dart';
+import 'package:paperswift/views/screens/exam/components/TeachersListContainer.dart';
+import 'package:paperswift/views/screens/exam/components/assignment_list_container.dart';
 
 import '../../../utils/constants.dart';
 import '../../../utils/responsive.dart';
@@ -70,7 +72,7 @@ class ExamDetailsScreen extends StatelessWidget {
                           ],
                         ),
                         SizedBox(height: defaultPadding),
-                        RecentFiles(),
+                        AssignmentListContainer(),
                         if (Responsive.isMobile(context))
                           SizedBox(height: defaultPadding),
                         if (Responsive.isMobile(context)) StorageDetails(),
@@ -83,7 +85,7 @@ class ExamDetailsScreen extends StatelessWidget {
                   if (!Responsive.isMobile(context))
                     Expanded(
                       flex: 2,
-                      child: StorageDetails(),
+                      child: TeachersListContainer(),
                     ),
                 ],
               )
