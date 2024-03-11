@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paperswift/controllers/examination_detail_controller.dart';
 import 'package:paperswift/routes/app_routes.dart';
 import 'package:paperswift/views/screens/dashboard/components/recent_files.dart';
 import 'package:paperswift/views/screens/dashboard/components/storage_details.dart';
-import 'package:paperswift/views/screens/exam/components/TeachersListContainer.dart';
+import 'package:paperswift/views/screens/exam/components/teachers_list_container.dart';
 import 'package:paperswift/views/screens/exam/components/assignment_list_container.dart';
 
 import '../../../utils/constants.dart';
 import '../../../utils/responsive.dart';
 
 class ExamDetailsScreen extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
@@ -98,7 +100,7 @@ class ExamDetailsScreen extends StatelessWidget {
 }
 
 class DepartmentTileGridView extends StatelessWidget {
-  const DepartmentTileGridView({
+  DepartmentTileGridView({
     Key? key,
     this.crossAxisCount = 5,
     this.childAspectRatio = 0.5,
@@ -107,20 +109,21 @@ class DepartmentTileGridView extends StatelessWidget {
   final int crossAxisCount;
   final double childAspectRatio;
 
+  ExaminationDetailController examinationDetailController=Get.find<ExaminationDetailController>();
+
   @override
   Widget build(BuildContext context) {
-    List departments=['CSE','ECE','EEE','BCA','ISE','MSC'];
-    return GridView.builder(
+    return  GridView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemCount: departments.length,
+      itemCount: examinationDetailController.examinationDetail.departments.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: crossAxisCount,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
         childAspectRatio: childAspectRatio,
       ),
-      itemBuilder: (context, index) => DepartmentTile(title:departments[index]),
+      itemBuilder: (context, index) => DepartmentTile(title:examinationDetailController.examinationDetail.departments[index].name),
     );
   }
 }

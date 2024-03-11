@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:paperswift/controllers/examination_detail_controller.dart';
+import 'package:paperswift/models/examination_detail.dart';
 import 'package:paperswift/views/screens/dashboard/components/deletethis1.dart';
 
 import '../../../../utils/constants.dart';
 
 
 class AssignmentListContainer extends StatelessWidget {
-  const AssignmentListContainer({
-    Key? key,
-  }) : super(key: key);
 
+  ExaminationDetailController examinationDetailController=Get.find<ExaminationDetailController>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,8 +46,8 @@ class AssignmentListContainer extends StatelessWidget {
                 ),
               ],
               rows: List.generate(
-                demoRecentFiles.length,
-                    (index) => assignmentTile(demoRecentFiles[index]),
+                examinationDetailController.examinationDetail.departments[examinationDetailController.currentDepartmentIndex.value].courses.length,
+                    (index) => assignmentTile(examinationDetailController.examinationDetail.departments[examinationDetailController.currentDepartmentIndex.value].courses[index]),
               ),
             ),
           ),
@@ -56,14 +57,14 @@ class AssignmentListContainer extends StatelessWidget {
   }
 }
 
-DataRow assignmentTile(RecentFile fileInfo) {
+DataRow assignmentTile(Course course) {
   return DataRow(
     cells: [
       DataCell(
-        Text(fileInfo.title!),
+        Text(course.name),
       ),
-      DataCell(Text(fileInfo.date!)),
-      DataCell(Text(fileInfo.size!)),
+      DataCell(Text(course.code)),
+      DataCell(Text(course.department)),
       DataCell(Text('NA')),
     ],
   );

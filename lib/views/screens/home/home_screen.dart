@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paperswift/controllers/exam_controller.dart';
+import 'package:paperswift/controllers/examination_detail_controller.dart';
 import 'package:paperswift/controllers/screen_controller.dart';
 
 import '../../../utils/responsive.dart';

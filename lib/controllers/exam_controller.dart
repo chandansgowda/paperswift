@@ -35,8 +35,6 @@ class ExamController extends GetxController{
       dynamic response =await api.getAllExams();
       for(dynamic data in response){
        exams_temp.add(Examination.fromJson(data));
-       exams_temp.add(Examination.fromJson(data));
-       exams_temp.add(Examination.fromJson(data));
       }
       exams.value=exams_temp;
     } catch (e) {

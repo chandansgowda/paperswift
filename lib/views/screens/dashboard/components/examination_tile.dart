@@ -1,24 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:paperswift/controllers/examination_detail_controller.dart';
 import 'package:paperswift/controllers/screen_controller.dart';
 import 'package:paperswift/routes/app_routes.dart';
 import 'package:paperswift/utils/constants.dart';
 
 class ExaminationTile extends StatelessWidget {
+  final int eid;
   final String title;
   final String examType;
   final String date;
   final String degree;
 
-   ExaminationTile({super.key, required this.title, required this.examType, required this.date, required this.degree});
+   ExaminationTile({super.key, required this.title, required this.examType, required this.date, required this.degree,required this.eid});
 
   ScreenController screenController =Get.put(ScreenController());
+  ExaminationDetailController examinationDetailController=Get.put(ExaminationDetailController());
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: (){
+      onTap: ()async{
+        await examinationDetailController.fetchData(eid);
         Get.toNamed(AppRoutes.examDetails);
       },
       child: Container(

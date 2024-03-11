@@ -201,6 +201,7 @@ class FileInfoCardGridView extends StatelessWidget {
         childAspectRatio: childAspectRatio,
       ),
       itemBuilder: (context, index) =>ExaminationTile(
+        eid: examController.exams[index].eid,
         title: examController.exams[index].sem.toString(),
         examType: examController.exams[index].isSupplementary
             ? "Supplementary"

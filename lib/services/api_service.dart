@@ -68,4 +68,13 @@ class ApiService {
       throw Exception('Failed to load data');
     }
   }
+  
+  Future<dynamic> getExaminationDetails(int examId) async{
+    final response=await dio.get('management/get_dept_and_teachers_for_exam/$examId');
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 }

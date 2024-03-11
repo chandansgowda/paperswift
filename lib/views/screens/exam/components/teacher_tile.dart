@@ -7,10 +7,12 @@ import '../../../../utils/constants.dart';
 class TeacherTile extends StatelessWidget {
   const TeacherTile({
     Key? key,
-    required this.name
+    required this.name,
+    required this.qualification
   }) : super(key: key);
 
   final String name;
+  final String qualification;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class TeacherTile extends StatelessWidget {
               ],
             ),
           ),
-          Text('Qualification')
+          Text(qualification)
         ],
       ),
     );
