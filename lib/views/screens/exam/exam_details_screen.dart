@@ -1,8 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paperswift/controllers/examination_detail_controller.dart';
-import 'package:paperswift/routes/app_routes.dart';
-import 'package:paperswift/views/screens/dashboard/components/recent_files.dart';
 import 'package:paperswift/views/screens/dashboard/components/storage_details.dart';
 import 'package:paperswift/views/screens/exam/components/teachers_list_container.dart';
 import 'package:paperswift/views/screens/exam/components/assignment_list_container.dart';
@@ -14,6 +14,7 @@ class ExamDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
+    ExaminationDetailController examinationDetailController=Get.find<ExaminationDetailController>();
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -46,7 +47,7 @@ class ExamDetailsScreen extends StatelessWidget {
                                   style:
                                       Theme.of(context).textTheme.titleMedium,
                                 ),
-                                ElevatedButton.icon(
+                                ElevatedButton(
                                   style: TextButton.styleFrom(
                                     padding: EdgeInsets.symmetric(
                                       horizontal: defaultPadding * 1.5,
@@ -56,9 +57,17 @@ class ExamDetailsScreen extends StatelessWidget {
                                               : 1),
                                     ),
                                   ),
-                                  onPressed: () {},
-                                  icon: Icon(Icons.add),
-                                  label: Text("Add New"),
+                                  onPressed: () {
+                                    var assignments=[];
+                                    assignments.addAll(examinationDetailController.examinationDetail.departments.expand((department) => department.courses.map((course) =>{course.code:course.paperSetterId})));
+                                    var data=json.encode({
+                                      "exam_id":examinationDetailController.examinationId,
+                                      "assignments":assignments
+                                    });
+                                    print(data);
+                                    //TODO:push the data to server
+                                  },
+                                  child: Text("Submit"),
                                 ),
                               ],
                             ),

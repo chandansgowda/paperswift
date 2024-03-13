@@ -25,6 +25,7 @@ class ExaminationTile extends StatelessWidget {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: ()async{
+        examinationDetailController.examinationId=eid;
         await examinationDetailController.fetchData(eid);
         Get.toNamed(AppRoutes.examDetails);
       },

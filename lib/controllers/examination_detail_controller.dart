@@ -12,6 +12,7 @@ class ExaminationDetailController extends GetxController{
   RxInt currentDepartmentIndex=0.obs;
   //TODO:Change the initial value
   RxInt currentCourseIndex=500.obs;
+  late int examinationId;
 
   @override
   void onInit() async {
