@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:paperswift/bindings/main_binding.dart';
 import 'package:paperswift/views/screens/exam/exam_details_screen.dart';
 import 'package:paperswift/views/screens/home/login_screen.dart';
 import 'package:paperswift/views/screens/home/splash_screen.dart';
@@ -11,7 +12,7 @@ class AppPages {
     GetPage(
       name: AppRoutes.home,
       page: () => HomeScreen(),
-      // binding: Binding(),
+      binding: MainBinding(),
     ),
     GetPage(
       name: AppRoutes.login,
