@@ -21,6 +21,9 @@ class ExaminationTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      hoverColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       onTap: ()async{
         await examinationDetailController.fetchData(eid);
         Get.toNamed(AppRoutes.examDetails);

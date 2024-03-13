@@ -19,7 +19,8 @@ class TeachersListContainer extends StatelessWidget {
         color: secondaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
-      child: Column(
+      child: Obx((){
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
@@ -31,7 +32,8 @@ class TeachersListContainer extends StatelessWidget {
             ),
             ...examinationDetailController.examinationDetail.departments[examinationDetailController.currentDepartmentIndex.value].paperSetters.map((paperSetter) => TeacherTile(name: paperSetter.name,qualification: paperSetter.qualification,)).toList(),
           ],
-      ),
+        );
+      }),
     );
   }
 }

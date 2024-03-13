@@ -26,7 +26,7 @@ class AssignmentListContainer extends StatelessWidget {
             "Assignment Table",
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          SizedBox(
+          Obx(() => SizedBox(
             width: double.infinity,
             child: DataTable(
               columnSpacing: defaultPadding,
@@ -50,7 +50,7 @@ class AssignmentListContainer extends StatelessWidget {
                     (index) => assignmentTile(examinationDetailController.examinationDetail.departments[examinationDetailController.currentDepartmentIndex.value].courses[index]),
               ),
             ),
-          ),
+          ),)
         ],
       ),
     );

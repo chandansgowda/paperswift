@@ -11,7 +11,6 @@ import '../../../utils/constants.dart';
 import '../../../utils/responsive.dart';
 
 class ExamDetailsScreen extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
@@ -23,9 +22,12 @@ class ExamDetailsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              IconButton(onPressed: (){
-                Get.close(1);
-              }, icon: Icon(Icons.close),),
+              IconButton(
+                onPressed: () {
+                  Get.close(1);
+                },
+                icon: Icon(Icons.close),
+              ),
               SizedBox(height: defaultPadding),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +70,7 @@ class ExamDetailsScreen extends StatelessWidget {
                               ),
                               tablet: DepartmentTileGridView(),
                               desktop: DepartmentTileGridView(
-                                childAspectRatio:4,
+                                childAspectRatio: 4,
                               ),
                             ),
                           ],
@@ -109,47 +111,56 @@ class DepartmentTileGridView extends StatelessWidget {
   final int crossAxisCount;
   final double childAspectRatio;
 
-  ExaminationDetailController examinationDetailController=Get.find<ExaminationDetailController>();
+  ExaminationDetailController examinationDetailController =
+      Get.find<ExaminationDetailController>();
 
   @override
   Widget build(BuildContext context) {
-    return  GridView.builder(
-      physics: NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      itemCount: examinationDetailController.examinationDetail.departments.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        childAspectRatio: childAspectRatio,
-      ),
-      itemBuilder: (context, index) => DepartmentTile(title:examinationDetailController.examinationDetail.departments[index].name),
-    );
+    return GridView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount:
+            examinationDetailController.examinationDetail.departments.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: crossAxisCount,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: childAspectRatio,
+        ),
+        itemBuilder: (context, index) => InkWell(
+          hoverColor: Colors.transparent,
+          splashColor: Colors.transparent,
+          highlightColor: Colors.transparent,
+              onTap: () {
+                examinationDetailController.currentDepartmentIndex.value =
+                    index;
+              },
+              child: Obx(() => DepartmentTile(
+                  title: examinationDetailController
+                      .examinationDetail.departments[index].name,
+                  bgColor: examinationDetailController
+                              .currentDepartmentIndex.value ==
+                          index
+                      ? primaryColor
+                      : secondaryColor)),
+            ));
   }
 }
 
 class DepartmentTile extends StatelessWidget {
   final String title;
+  final Color bgColor;
 
-  const DepartmentTile({super.key, required this.title});
+  DepartmentTile({super.key, required this.title, required this.bgColor});
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      hoverColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      highlightColor: Colors.transparent,
-      onTap: (){
-      //TODO:Change the table details
-    },
-      child: Container(
+    return Container(
         padding: EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
-          color: secondaryColor,
+          color: bgColor,
           borderRadius: const BorderRadius.all(Radius.circular(10)),
         ),
-        child: Center(child: Text(title))
-      ),
-    );
+        child: Center(child: Text(title)));
   }
 }

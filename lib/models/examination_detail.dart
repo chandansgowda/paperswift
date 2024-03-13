@@ -62,6 +62,8 @@ class Course {
   final dynamic syllabusDocUrl;
   final String department;
   final int sem;
+  String paperSetterName="";
+  int paperSetterId=0;
 
   Course({
     required this.code,
