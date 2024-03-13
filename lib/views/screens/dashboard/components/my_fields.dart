@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:paperswift/controllers/degree_detail_controller.dart';
 import 'package:paperswift/controllers/exam_controller.dart';
+import 'package:paperswift/controllers/main_controller.dart';
 import 'package:paperswift/services/api_service.dart';
 import 'package:paperswift/views/screens/dashboard/components/examination_tile.dart';
 
@@ -18,7 +19,6 @@ class MyFiles extends StatelessWidget {
   }) : super(key: key);
   ExamController examController = Get.put(ExamController());
   DegreesDetailsController degreesDetailsController=Get.put(DegreesDetailsController());
-  ApiService api=ApiService();
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
@@ -185,7 +185,7 @@ class MyFiles extends StatelessWidget {
                                           "scheme": degreesDetailsController.selectedSchemeId.value
                                         });
                                         print(body);
-                                        await api.postNewExam(body);
+                                        await Get.find<MainController>().api.postNewExam(body);
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(

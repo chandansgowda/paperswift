@@ -86,8 +86,9 @@ class ApiService {
     }
   }
   Future<dynamic> postNewExam(var data) async{
-    final response=await dio.post('management/exams',data: data);
-    if (response.statusCode == 200) {
+    print(dioOptions.headers);
+    final response=await dio.post('management/exams/',data: data);
+    if (response.statusCode == 201) {
       print("Successfully created exam");
       return response.data;
     } else {
