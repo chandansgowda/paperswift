@@ -134,6 +134,7 @@ class DepartmentTileGridView extends StatelessWidget {
               onTap: () {
                 examinationDetailController.currentDepartmentIndex.value =
                     index;
+                examinationDetailController.currentCourseIndex.value=500;
               },
               child: Obx(() => DepartmentTile(
                   title: examinationDetailController

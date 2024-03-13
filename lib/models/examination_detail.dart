@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
+
 class ExaminationDetail {
   final List<Department> departments;
   final int count;
@@ -62,7 +64,7 @@ class Course {
   final dynamic syllabusDocUrl;
   final String department;
   final int sem;
-  String paperSetterName="";
+  RxString paperSetterName="".obs;
   int paperSetterId=0;
 
   Course({

@@ -30,7 +30,7 @@ class TeachersListContainer extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            ...examinationDetailController.examinationDetail.departments[examinationDetailController.currentDepartmentIndex.value].paperSetters.map((paperSetter) => TeacherTile(name: paperSetter.name,qualification: paperSetter.qualification,)).toList(),
+            ...examinationDetailController.examinationDetail.departments[examinationDetailController.currentDepartmentIndex.value].paperSetters.map((paperSetter) => TeacherTile(name: paperSetter.name,qualification: paperSetter.qualification,id: paperSetter.id,)).toList(),
           ],
         );
       }),

@@ -10,6 +10,8 @@ class ExaminationDetailController extends GetxController{
   late FlutterSecureStorage storage;
 
   RxInt currentDepartmentIndex=0.obs;
+  //TODO:Change the initial value
+  RxInt currentCourseIndex=500.obs;
 
   @override
   void onInit() async {

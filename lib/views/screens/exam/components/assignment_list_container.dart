@@ -47,7 +47,7 @@ class AssignmentListContainer extends StatelessWidget {
               ],
               rows: List.generate(
                 examinationDetailController.examinationDetail.departments[examinationDetailController.currentDepartmentIndex.value].courses.length,
-                    (index) => assignmentTile(examinationDetailController.examinationDetail.departments[examinationDetailController.currentDepartmentIndex.value].courses[index]),
+                    (index) => assignmentTile(examinationDetailController.examinationDetail.departments[examinationDetailController.currentDepartmentIndex.value].courses[index],index),
               ),
             ),
           ),)
@@ -57,14 +57,29 @@ class AssignmentListContainer extends StatelessWidget {
   }
 }
 
-DataRow assignmentTile(Course course) {
+DataRow assignmentTile(Course course,int courseIndex) {
+  ExaminationDetailController examinationDetailController=Get.find<ExaminationDetailController>();
   return DataRow(
     cells: [
       DataCell(
         Text(course.name),
       ),
       DataCell(Text(course.code)),
-      DataCell(Text(course.department)),
+      DataCell(InkWell(
+        onTap: (){
+          examinationDetailController.currentCourseIndex.value=courseIndex;
+        },
+        child: Container(
+            decoration: BoxDecoration(
+              color: examinationDetailController.currentCourseIndex.value==courseIndex?Colors.blue:Colors.transparent,
+              borderRadius: BorderRadius.circular(5),
+              border: Border.all(color: Colors.blue)
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(course.paperSetterName==""?"Select Paper Setter":course.paperSetterName.value),
+            )),
+  ),),
       DataCell(Text('NA')),
     ],
   );
