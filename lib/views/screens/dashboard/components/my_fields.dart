@@ -17,8 +17,7 @@ class MyFiles extends StatelessWidget {
   MyFiles({
     Key? key,
   }) : super(key: key);
-  ExamController examController = Get.put(ExamController());
-  DegreesDetailsController degreesDetailsController=Get.put(DegreesDetailsController());
+  DegreesDetailsController degreesDetailsController=Get.find<DegreesDetailsController>();
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;

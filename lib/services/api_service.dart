@@ -95,4 +95,13 @@ class ApiService {
       throw Exception('Failed to load data');
     }
   }
+  Future<dynamic> postBulkPaperSetters(var data) async{
+    final response=await dio.post('assignment/bulk_assign_paper_setters',data: data);
+    if (response.statusCode == 200) {
+      print("Successfully added bulk setters");
+      return response.data;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 }

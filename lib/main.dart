@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:paperswift/bindings/main_binding.dart';
+import 'package:paperswift/bindings/home_binding.dart';
 import 'package:paperswift/controllers/auth_controller.dart';
 import 'package:paperswift/routes/app_pages.dart';
 import 'package:paperswift/routes/app_routes.dart';
@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
-      initialBinding: MainBinding(),
+      initialBinding: HomeBinding(),
     );
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:paperswift/controllers/examination_detail_controller.dart';
-import 'package:paperswift/controllers/screen_controller.dart';
 import 'package:paperswift/routes/app_routes.dart';
 import 'package:paperswift/utils/constants.dart';
 
@@ -15,8 +14,7 @@ class ExaminationTile extends StatelessWidget {
 
    ExaminationTile({super.key, required this.title, required this.examType, required this.date, required this.degree,required this.eid});
 
-  ScreenController screenController =Get.put(ScreenController());
-  ExaminationDetailController examinationDetailController=Get.put(ExaminationDetailController());
+  ExaminationDetailController examinationDetailController=Get.find<ExaminationDetailController>();
 
   @override
   Widget build(BuildContext context) {

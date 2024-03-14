@@ -64,6 +64,7 @@ class Course {
   final dynamic syllabusDocUrl;
   final String department;
   final int sem;
+  final String status;
   RxString paperSetterName="".obs;
   int paperSetterId=0;
 
@@ -74,6 +75,7 @@ class Course {
     required this.syllabusDocUrl,
     required this.department,
     required this.sem,
+    required this.status
   });
 
   factory Course.fromRawJson(String str) => Course.fromJson(json.decode(str));
@@ -87,6 +89,7 @@ class Course {
     syllabusDocUrl: json["syllabus_doc_url"],
     department: json["department"],
     sem: json["sem"],
+    status: json["assignment_status"]
   );
 
   Map<String, dynamic> toJson() => {

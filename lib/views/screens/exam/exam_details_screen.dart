@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paperswift/controllers/examination_detail_controller.dart';
+import 'package:paperswift/controllers/main_controller.dart';
+import 'package:paperswift/services/api_service.dart';
 import 'package:paperswift/views/screens/dashboard/components/storage_details.dart';
 import 'package:paperswift/views/screens/exam/components/teachers_list_container.dart';
 import 'package:paperswift/views/screens/exam/components/assignment_list_container.dart';
@@ -57,15 +59,15 @@ class ExamDetailsScreen extends StatelessWidget {
                                               : 1),
                                     ),
                                   ),
-                                  onPressed: () {
+                                  onPressed: () async{
                                     var assignments=[];
-                                    assignments.addAll(examinationDetailController.examinationDetail.departments.expand((department) => department.courses.map((course) =>{course.code:course.paperSetterId})));
+                                    assignments.addAll(examinationDetailController.examinationDetail.departments.expand((department) => department.courses.map((course) =>{"course_code":course.code,"paper_setter_id":course.paperSetterId})));
                                     var data=json.encode({
                                       "exam_id":examinationDetailController.examinationId,
                                       "assignments":assignments
                                     });
                                     print(data);
-                                    //TODO:push the data to server
+                                    await Get.find<MainController>().api.postBulkPaperSetters(data);
                                   },
                                   child: Text("Submit"),
                                 ),

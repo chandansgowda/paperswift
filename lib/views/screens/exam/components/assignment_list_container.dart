@@ -77,7 +77,7 @@ DataRow assignmentTile(Course course,int courseIndex) {
             ),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(course.paperSetterName==""?"Select Paper Setter":course.paperSetterName.value),
+              child: Text(course.paperSetterName.value==""?"Select Paper Setter":course.paperSetterName.value),
             )),
   ),),
       DataCell(Text('NA')),

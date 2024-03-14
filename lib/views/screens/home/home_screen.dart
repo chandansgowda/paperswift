@@ -11,8 +11,8 @@ import 'components/side_menu.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ScreenController screenController=Get.put(ScreenController());
-    ExamController examController=Get.put(ExamController());
+    ScreenController screenController=Get.find<ScreenController>();
+    ExamController examController=Get.find<ExamController>();
     return Scaffold(
       drawer: SideMenu(),
       body: SafeArea(
