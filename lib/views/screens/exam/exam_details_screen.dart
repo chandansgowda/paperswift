@@ -27,6 +27,9 @@ class ExamDetailsScreen extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () {
+                  //TODO:Object can be reset
+                  examinationDetailController.currentCourseIndex.value=500;
+                  examinationDetailController.currentDepartmentIndex.value=0;
                   Get.close(1);
                 },
                 icon: Icon(Icons.close),
@@ -61,13 +64,20 @@ class ExamDetailsScreen extends StatelessWidget {
                                   ),
                                   onPressed: () async{
                                     var assignments=[];
-                                    assignments.addAll(examinationDetailController.examinationDetail.departments.expand((department) => department.courses.map((course) =>{"course_code":course.code,"paper_setter_id":course.paperSetterId})));
-                                    var data=json.encode({
-                                      "exam_id":examinationDetailController.examinationId,
-                                      "assignments":assignments
-                                    });
-                                    print(data);
-                                    await Get.find<MainController>().api.postBulkPaperSetters(data);
+                                    assignments.addAll(examinationDetailController.examinationDetail.departments.expand((department) => department.courses.map((course) {
+                                      if(course.paperSetterName.value!=""){
+                                        return {"course_code":course.code,"paper_setter_id":course.paperSetterId};
+                                      }
+                                    })));
+                                    assignments.removeWhere((element) => element==null);
+                                    if(assignments.isNotEmpty){
+                                      var data=json.encode({
+                                        "exam_id":examinationDetailController.examinationId,
+                                        "assignments":assignments
+                                      });
+                                      print(data);
+                                      await Get.find<MainController>().api.postBulkPaperSetters(data);
+                                    }
                                   },
                                   child: Text("Submit"),
                                 ),

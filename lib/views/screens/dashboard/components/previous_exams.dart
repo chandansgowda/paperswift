@@ -5,8 +5,8 @@ import '../../../../utils/constants.dart';
 import 'deletethis1.dart';
 
 
-class RecentFiles extends StatelessWidget {
-  const RecentFiles({
+class PreviousExams extends StatelessWidget {
+  const PreviousExams({
     Key? key,
   }) : super(key: key);
 
@@ -22,7 +22,7 @@ class RecentFiles extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Recent Files",
+            "Previous Examinations",
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(
@@ -32,18 +32,18 @@ class RecentFiles extends StatelessWidget {
               // minWidth: 600,
               columns: [
                 DataColumn(
-                  label: Text("File Name"),
+                  label: Text("Examination"),
+                ),
+                DataColumn(
+                  label: Text("Degree"),
                 ),
                 DataColumn(
                   label: Text("Date"),
                 ),
-                DataColumn(
-                  label: Text("Size"),
-                ),
               ],
               rows: List.generate(
-                demoRecentFiles.length,
-                (index) => recentFileDataRow(demoRecentFiles[index]),
+                previousExaminations.length,
+                    (index) => recentFileDataRow(previousExaminations[index]),
               ),
             ),
           ),
@@ -57,22 +57,10 @@ DataRow recentFileDataRow(RecentFile fileInfo) {
   return DataRow(
     cells: [
       DataCell(
-        Row(
-          children: [
-            SvgPicture.asset(
-              fileInfo.icon!,
-              height: 30,
-              width: 30,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: defaultPadding),
-              child: Text(fileInfo.title!),
-            ),
-          ],
-        ),
+        Text(fileInfo.title!),
       ),
+      DataCell(Text(fileInfo.degree!)),
       DataCell(Text(fileInfo.date!)),
-      DataCell(Text(fileInfo.size!)),
     ],
   );
 }

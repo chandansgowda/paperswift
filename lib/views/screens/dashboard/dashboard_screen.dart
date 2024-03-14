@@ -1,12 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:paperswift/views/screens/dashboard/components/previous_exams.dart';
 
 import '../../../utils/constants.dart';
 import '../../../utils/responsive.dart';
 import 'components/header.dart';
 
 import 'components/my_fields.dart';
-import 'components/recent_files.dart';
 import 'components/storage_details.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -29,7 +29,7 @@ class DashboardScreen extends StatelessWidget {
                     children: [
                       MyFiles(),
                       SizedBox(height: defaultPadding),
-                      RecentFiles(),
+                      PreviousExams(),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),
                       if (Responsive.isMobile(context)) StorageDetails(),
