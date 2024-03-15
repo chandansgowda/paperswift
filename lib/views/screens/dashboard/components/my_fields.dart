@@ -173,18 +173,26 @@ class MyFiles extends StatelessWidget {
                                     ),
                                     InkWell(
                                       onTap: ()async{
-                                        var body = json.encode({
-                                          //TODO:Change it to dynamic
-                                          "sem":int.parse(degreesDetailsController.semController.text),
-                                          "is_supplementary":degreesDetailsController.examType.value=='Supplementary'?true:false,
-                                          "paper_submission_deadline": degreesDetailsController.deadlineDate.value,
-                                          "is_exam_completed": false,
-                                          "description": "Loreum Ipsum",
-                                          "degree": degreesDetailsController.selectedDegree.value,
-                                          "scheme": degreesDetailsController.selectedSchemeId.value
-                                        });
-                                        print(body);
-                                        await Get.find<MainController>().api.postNewExam(body);
+                                        try{
+                                          var body = json.encode({
+                                            //TODO:Change it to dynamic
+                                            "sem":int.parse(degreesDetailsController.semController.text),
+                                            "is_supplementary":degreesDetailsController.examType.value=='Supplementary'?true:false,
+                                            "paper_submission_deadline": degreesDetailsController.deadlineDate.value,
+                                            "is_exam_completed": false,
+                                            "description": "Loreum Ipsum",
+                                            "degree": degreesDetailsController.selectedDegree.value,
+                                            "scheme": degreesDetailsController.selectedSchemeId.value
+                                          });
+                                          print(body);
+                                          await Get.find<MainController>().api.postNewExam(body);
+                                          await Get.find<ExamController>().fetchData();
+                                        } catch (error){
+                                          Get.snackbar("Some error occured", error.toString());
+                                        } finally{
+                                          Get.back();
+                                        }
+
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(

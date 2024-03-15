@@ -4,8 +4,10 @@ import 'package:dio/dio.dart';
 import 'package:paperswift/utils/constants.dart';
 
 class ApiService {
-  final dioOptions =
-      BaseOptions(baseUrl: baseUrl, headers: {'accept': 'application/json', 'Content-Type': 'application/json'});
+  final dioOptions = BaseOptions(
+    baseUrl: baseUrl,
+    headers: {'accept': 'application/json', 'Content-Type': 'application/json'},
+  );
 
   late final Dio dio;
   late final String? token;
@@ -68,35 +70,41 @@ class ApiService {
       throw Exception('Failed to load data');
     }
   }
-  
-  Future<dynamic> getExaminationDetails(int examId) async{
-    final response=await dio.get('management/get_dept_and_teachers_for_exam/$examId');
+
+  Future<dynamic> getExaminationDetails(int examId) async {
+    final response = await dio.get('management/get_dept_and_teachers_for_exam/$examId');
     if (response.statusCode == 200) {
       return response.data;
     } else {
       throw Exception('Failed to load data');
     }
   }
-  Future<dynamic> getDegreesDetails() async{
-    final response=await dio.get('management/get_degree_and_schemes');
+
+  Future<dynamic> getDegreesDetails() async {
+    final response = await dio.get('management/get_degree_and_schemes');
     if (response.statusCode == 200) {
       return response.data;
     } else {
       throw Exception('Failed to load data');
     }
   }
-  Future<dynamic> postNewExam(var data) async{
+
+  Future<dynamic> postNewExam(var data) async {
     print(dioOptions.headers);
-    final response=await dio.post('management/exams/',data: data);
-    if (response.statusCode == 201) {
-      print("Successfully created exam");
-      return response.data;
-    } else {
-      throw Exception('Failed to load data');
+    try {
+      final response = await dio.post('management/exams/', data: data);
+      if (response.statusCode == 201) {
+        print("Successfully created exam");
+        return response.data;
+      }
+    } on DioException catch (e) {
+      print(e);
+      throw Exception('Failed to load data: ${e.toString()}');
     }
   }
-  Future<dynamic> postBulkPaperSetters(var data) async{
-    final response=await dio.post('assignment/bulk_assign_paper_setters',data: data);
+
+  Future<dynamic> postBulkPaperSetters(var data) async {
+    final response = await dio.post('assignment/bulk_assign_paper_setters', data: data);
     if (response.statusCode == 200) {
       print("Successfully added bulk setters");
       return response.data;
