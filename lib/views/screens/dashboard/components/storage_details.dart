@@ -21,7 +21,7 @@ class StorageDetails extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Storage Details",
+            "Reports",
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.w500,
@@ -31,21 +31,21 @@ class StorageDetails extends StatelessWidget {
           Chart(),
           StorageInfoCard(
             svgSrc: "assets/icons/Documents.svg",
-            title: "Documents Files",
+            title: "Received QP",
             amountOfFiles: "1.3GB",
             numOfFiles: 1328,
           ),
           StorageInfoCard(
             svgSrc: "assets/icons/media.svg",
-            title: "Media Files",
+            title: "Pending QP",
             amountOfFiles: "15.3GB",
             numOfFiles: 1328,
           ),
           StorageInfoCard(
             svgSrc: "assets/icons/folder.svg",
-            title: "Other Files",
+            title: "Secure Files",
             amountOfFiles: "1.3GB",
-            numOfFiles: 1328,
+            numOfFiles: 150,
           ),
           StorageInfoCard(
             svgSrc: "assets/icons/unknown.svg",

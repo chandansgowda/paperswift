@@ -22,7 +22,7 @@ class PreviousExams extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Previous Examinations",
+            "History",
             style: Theme.of(context).textTheme.titleMedium,
           ),
           SizedBox(
