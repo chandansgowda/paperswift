@@ -1,6 +1,7 @@
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:paperswift/bindings/exam_detail_binding.dart';
 import 'package:paperswift/bindings/home_binding.dart';
+import 'package:paperswift/views/screens/document_upload/document_upload_screen.dart';
 import 'package:paperswift/views/screens/exam/exam_details_screen.dart';
 import 'package:paperswift/views/screens/home/login_screen.dart';
 import 'package:paperswift/views/screens/home/splash_screen.dart';
@@ -27,6 +28,11 @@ class AppPages {
       name: AppRoutes.examDetails,
       page: () => ExamDetailsScreen(),
       binding: ExamDetailBinding()
+    ),
+    GetPage(
+        name: AppRoutes.docsUploadScreen,
+        page: () => DocumentUploadScreen(),
+        // binding: ExamDetailBinding()
     ),
   ];
 }

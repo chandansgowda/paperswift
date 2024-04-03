@@ -5,4 +5,5 @@ class AppRoutes {
   static const settings = "/settings";
   static const splash = "/splash";
   static const examDetails = "/exam-details";
+  static const docsUploadScreen = "/docs-upload-screen";
 }
