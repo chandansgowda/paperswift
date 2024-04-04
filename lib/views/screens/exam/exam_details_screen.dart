@@ -65,7 +65,7 @@ class ExamDetailsScreen extends StatelessWidget {
                                   onPressed: () async{
                                     var assignments=[];
                                     assignments.addAll(examinationDetailController.examinationDetail.departments.expand((department) => department.courses.map((course) {
-                                      if(course.paperSetterName.value!=""){
+                                      if(course.paperSetterName.value!="NA" &&( course.status=="Invite Rejected" || course.status=="NA")) {
                                         return {"course_code":course.code,"paper_setter_id":course.paperSetterId};
                                       }
                                     })));
@@ -77,6 +77,7 @@ class ExamDetailsScreen extends StatelessWidget {
                                       });
                                       print(data);
                                       await Get.find<MainController>().api.postBulkPaperSetters(data);
+                                      //TODO:Catch the error and display proper message
                                     }
                                   },
                                   child: Text("Submit"),
