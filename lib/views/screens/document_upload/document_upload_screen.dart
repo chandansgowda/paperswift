@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:dio/dio.dart';
 import 'package:paperswift/utils/constants.dart';
+import 'dart:html' as html;
 
 void main() {
   runApp(MyApp());
@@ -26,38 +28,90 @@ class DocumentUploadScreen extends StatefulWidget {
 }
 
 class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
-  String _filePath='';
+  FilePickerResult? result;
 
   void _openFileExplorer() async {
     try {
       // Open file explorer
-      var file = await FilePicker.platform.pickFiles(
+      result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['pdf', 'doc', 'docx'],
+        allowedExtensions: ['pdf', 'doc', 'docx', 'zip'],
       );
-      String? filePath=file!.files.single.path;
-
-      if (filePath != null) {
-        setState(() {
-          _filePath = filePath;
-        });
-      }
     } catch (e) {
       print("Error while picking the file: $e");
+    }
+  }
+
+  void _submitDocument(String courseCode, int examId,String token) async {
+    if (result != null) {
+      final dio = Dio();
+      List<int> fileBytes = result!.files.single.bytes as List<int>;
+      final formData = FormData.fromMap({
+        'name': 'dio',
+        'date': DateTime.now().toIso8601String(),
+        'exam_id': 15,
+        'course_code': '20CS710',
+        'tracking_token':token,
+        // 'tracking_token':,
+        'file': MultipartFile.fromBytes(
+          fileBytes,
+          filename: "fileName",
+        ),
+      });
+      final response = await dio.post('https://paperswiftsjcetest.pythonanywhere.com/assignment/upload_question_paper', data: formData);
+      print(formData);
+      if (response.statusCode == 200) {
+        print('File uploaded successfully');
+      } else {
+        print('Failed to upload file. Error: ${response}');
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final List<Map<String, String>> data = [
-      {'course_code': 'CSE101', 'subject_name': 'Introduction to Computer Science', 'semester': '1'},
-      {'course_code': 'MTH201', 'subject_name': 'Linear Algebra', 'semester': '2'},
-      {'course_code': 'ENG301', 'subject_name': 'English Composition', 'semester': '3'},
+      {
+        'course_code': 'CSE101',
+        'subject_name': 'Introduction to Computer Science',
+        'semester': '1'
+      }
       // Add more data as needed
     ];
+    Uri uri = Uri.parse(html.window.location.href);
+    String fragment = uri.fragment;
+
+    // Split the fragment to separate path and query parameters
+    List<String> parts = fragment.split('?');
+
+    // Extract the path and query parameters
+    String path = parts[0]; // This should be "/upload-qp"
+    String queryParamsString = parts.length > 1 ? parts[1] : '';
+
+    // Parse the query parameters
+    Map<String, String> queryParams = {};
+    if (queryParamsString.isNotEmpty) {
+      List<String> pairs = queryParamsString.split('&');
+      for (String pair in pairs) {
+        List<String> keyValue = pair.split('=');
+        if (keyValue.length == 2) {
+          String key = Uri.decodeComponent(keyValue[0]);
+          String value = Uri.decodeComponent(keyValue[1]);
+          queryParams[key] = value;
+        }
+      }
+    }
+    String course_code=queryParams['course_code']!;
+    String course_name=queryParams['course_name']!;
+    String exam_id=queryParams['exam_id']!;
+    String token=queryParams['tracking_token']!;
+    String sem=queryParams['sem']!;
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Upload Document'),
+        centerTitle: true,
       ),
       body: Center(
         child: Column(
@@ -79,18 +133,20 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
                   rows: data
                       .map(
                         (item) => DataRow(
-                      cells: [
-                        DataCell(Text(item['course_code']!)),
-                        DataCell(Text(item['subject_name']!)),
-                        DataCell(Text(item['semester']!)),
-                      ],
-                    ),
-                  )
+                          cells: [
+                            DataCell(Text(course_code)),
+                            DataCell(Text(course_name.replaceAll("+", " "))),
+                            DataCell(Text(sem)),
+                          ],
+                        ),
+                      )
                       .toList(),
                 ),
               ),
             ),
-            SizedBox(height: 50,),
+            SizedBox(
+              height: 50,
+            ),
             GestureDetector(
               onTap: _openFileExplorer,
               child: Container(
@@ -100,28 +156,34 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
                     color: secondaryColor,
                     borderRadius: BorderRadius.circular(25),
                   ),
-                  child: Center(child: Row(
+                  child: Center(
+                      child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(Icons.upload),
-                      SizedBox(width: 20,),
+                      SizedBox(
+                        width: 20,
+                      ),
                       Text('UPLOAD DOCUMENT'),
                     ],
                   ))),
             ),
             SizedBox(height: 20),
             GestureDetector(
-              onTap: (){
-
+              onTap: () {
+                _submitDocument(course_code,int.parse(exam_id),token);
               },
               child: Container(
-                  height: 50,
-                  width: 500,
-                  decoration: BoxDecoration(
-                    color: primaryColor,
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                  child: Center(child:Text('SUBMIT'), )),
+                height: 50,
+                width: 500,
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Center(
+                  child: Text('SUBMIT'),
+                ),
+              ),
             ),
           ],
         ),
@@ -129,4 +191,3 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
     );
   }
 }
-

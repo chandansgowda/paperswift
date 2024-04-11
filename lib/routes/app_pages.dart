@@ -28,18 +28,13 @@ class AppPages {
       name: AppRoutes.splash,
       page: () => SplashScreen(),
     ),
+    GetPage(name: AppRoutes.docsUploadScreen
+        , page: ()=>DocumentUploadScreen()),
     GetPage(
       name: AppRoutes.examDetails,
       page: () => ExamDetailsScreen(),
       middlewares: [AuthMiddleware()],
       binding: ExamDetailBinding(),
-    ),
-    GetPage(
-      name: AppRoutes.docsUploadScreen,
-      middlewares: [AuthMiddleware()],
-      page: () => DocumentUploadScreen(),
-
-      // binding: ExamDetailBinding()
     ),
   ];
 }
