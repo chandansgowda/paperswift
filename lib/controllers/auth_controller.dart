@@ -58,9 +58,8 @@ class AuthController extends GetxController {
       String? token = await storage.read(key: 'token');
       log.i("Token: $token");
       await storage.delete(key: 'token');
-      print("object");
       token = await storage.read(key: 'token');
-      print("Token $token");
+      log.i("Token after deleting: $token");
       // api.logout().then((value){
       //   print(value);
       //   if(value){
@@ -68,8 +67,7 @@ class AuthController extends GetxController {
       //   }
       //
       // });
-      //TODO: Handle error in api call
-
+      Get.offAllNamed(AppRoutes.login);
     } catch (error) {
       log.e('Error occurred: $error');
     } finally {
