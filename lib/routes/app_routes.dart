@@ -6,4 +6,5 @@ class AppRoutes {
   static const splash = "/splash";
   static const examDetails = "/exam-details";
   static const docsUploadScreen = "/upload-qp";
+  static const qpReviewScreen = "/qp-review";
 }

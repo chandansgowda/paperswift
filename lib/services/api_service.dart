@@ -112,4 +112,24 @@ class ApiService {
       throw Exception('Failed to load data');
     }
   }
+
+  Future<dynamic> postComment(var data) async {
+    final response = await dio.post('assignment/comment', data: data);
+    if (response.statusCode == 200) {
+      print("Successfully posted comment");
+      return response.data;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<dynamic> getQuestionPaperDetails(int examId) async {
+    //TODO:Change the link
+    final response = await dio.get('assignment/submitted_papers/$examId');
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 }

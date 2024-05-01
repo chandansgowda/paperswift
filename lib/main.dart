@@ -8,6 +8,7 @@ import 'package:paperswift/routes/app_pages.dart';
 import 'package:paperswift/routes/app_routes.dart';
 import 'package:paperswift/utils/constants.dart';
 import 'package:paperswift/views/screens/home/login_screen.dart';
+import 'controllers/main_controller.dart';
 import 'views/screens/home/home_screen.dart';
 
 void main() {
@@ -29,6 +30,13 @@ class MyApp extends StatelessWidget {
       initialRoute: AppRoutes.splash,
       getPages: AppPages.pages,
       initialBinding: HomeBinding(),
+      routingCallback: (route){
+        if(route?.current!=AppRoutes.splash){
+          print("Call middleware function");
+        }
+      },
     );
   }
 }
+
+

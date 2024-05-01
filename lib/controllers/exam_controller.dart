@@ -38,6 +38,7 @@ class ExamController extends GetxController{
       }
       exams.value=exams_temp;
     } catch (e) {
+      print(e);
       throw Exception(e);
     }
   }

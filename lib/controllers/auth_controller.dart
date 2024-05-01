@@ -52,17 +52,22 @@ class AuthController extends GetxController {
   }
 
   Future<void> logout() async {
+    print("Logout is pressed");
     try {
       isLoading.value = true;
       String? token = await storage.read(key: 'token');
       log.i("Token: $token");
-
-      api.logout().then((value){
-        if(value){
-          Get.offAllNamed(AppRoutes.login);
-        }
-        storage.delete(key: 'token');
-      });
+      await storage.delete(key: 'token');
+      print("object");
+      token = await storage.read(key: 'token');
+      print("Token $token");
+      // api.logout().then((value){
+      //   print(value);
+      //   if(value){
+      //     Get.offAllNamed(AppRoutes.login);
+      //   }
+      //
+      // });
       //TODO: Handle error in api call
 
     } catch (error) {

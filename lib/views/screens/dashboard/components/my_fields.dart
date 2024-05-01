@@ -204,7 +204,8 @@ class MyFiles extends StatelessWidget {
                                           child: Text('CREATE'),
                                         ),
                                       ),
-                                    )
+                                    ),
+
                                   ],
                                 ),
                               ),
@@ -227,9 +228,10 @@ class MyFiles extends StatelessWidget {
           ),
           tablet: FileInfoCardGridView(),
           desktop: FileInfoCardGridView(
-            childAspectRatio: _size.width < 1400 ? 1.1 : 1.4,
+            childAspectRatio: _size.width < 1400 ? 1.8 : 1.3,
           ),
         ),
+
       ],
     );
   }

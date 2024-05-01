@@ -19,9 +19,11 @@ class MainController extends GetxController{
 
   Future checkToken() async {
     String? token = await storage.read(key: 'token');
+    print("Check token $token");
     //TODO: Add validity check from API
     if (token != null) {
-      api = ApiService(token: token);
+      //TODO:pass dynamic token value
+      api = ApiService(token: 'be14a465f9eee3dc6bdfd821db5e3a2079ddf59a');
       Get.toNamed(AppRoutes.home);
     } else {
       api = ApiService();
