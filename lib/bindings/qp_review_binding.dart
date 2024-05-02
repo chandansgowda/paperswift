@@ -7,6 +7,5 @@ class QuestionPaperReviewBinding extends Bindings{
   @override
   void dependencies(){
     Get.put(MainController(),permanent: true);
-    Get.put(QuestionPaperReviewController());
   }
 }

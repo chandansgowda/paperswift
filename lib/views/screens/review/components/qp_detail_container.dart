@@ -2,16 +2,20 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:paperswift/controllers/main_controller.dart';
 import 'package:paperswift/controllers/qp_review_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../models/question_paper_detail.dart';
 import '../../../../utils/constants.dart';
 
 class QuestionPaperDetailContainer extends StatelessWidget {
-  QuestionPaperReviewController questionPaperReviewController=Get.find<QuestionPaperReviewController>();
+  QuestionPaperReviewController questionPaperReviewController =
+      Get.find<QuestionPaperReviewController>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -23,116 +27,183 @@ class QuestionPaperDetailContainer extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Assignment Table",
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          Obx(
-                () => SizedBox(
-              width: double.infinity,
-              child: DataTable(
-                columnSpacing: defaultPadding,
-                // minWidth: 600,
-                columns: [
-                  DataColumn(
-                    label: Text("Course name"),
+          Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Center(child: Text("Course name")),
                   ),
-                  DataColumn(
-                    label: Text("Course code"),
+                  Expanded(
+                    flex: 1,
+                    child: Center(child: Text("Course code")),
                   ),
-                  DataColumn(
-                    label: Text("Semester"),
+                  Expanded(
+                    flex: 1,
+                    child: Center(child: Text("Status")),
                   ),
-                  DataColumn(
-                    label: Text("Assigned To"),
+                  Expanded(
+                    flex: 2,
+                    child: Center(child: Text("Assigned to")),
                   ),
-                  DataColumn(
-                    label: Text("Review"),
+                  Expanded(
+                    flex: 2,
+                    child: Center(child: Text("Latest review")),
                   ),
-                  DataColumn(
-                    label: Text("Latest message"),
+                  Expanded(
+                    flex: 3,
+                    child: Center(child: Text("Review")),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Center(child: Text("Download")),
                   ),
                 ],
-                rows: List.generate(
+              ),
+              Divider(
+                thickness: 2,
+              ),
+              Column(
+                children: List.generate(
                   questionPaperReviewController
                       .questionPaperDetail
                       .departments[questionPaperReviewController
-                      .currentDepartmentIndex.value]
+                          .currentDepartmentIndex.value]
                       .courses
                       .length,
-                      (index) => assignmentTile(
-                        context,
+                  (index) => assignmentTile(
+                      context,
                       questionPaperReviewController
                           .questionPaperDetail
                           .departments[questionPaperReviewController
-                          .currentDepartmentIndex.value]
+                              .currentDepartmentIndex.value]
                           .courses[index],
                       index),
                 ),
               ),
-            ),
-          )
+            ],
+          ),
         ],
       ),
     );
   }
 }
 
-DataRow assignmentTile(BuildContext context,Course course, int courseIndex) {
-  QuestionPaperReviewController questionPaperReviewController=Get.find<QuestionPaperReviewController>();
-  return DataRow(
-    cells: [
-      DataCell(
-        Text(course.name),
+Row assignmentTile(BuildContext context, Course course, int courseIndex) {
+  Future<void> launchLink(String url, {bool isNewTab = true}) async {
+    await launchUrl(
+      Uri.parse(url),
+      webOnlyWindowName: isNewTab ? '_blank' : '_self',
+    );
+  }
+
+  return Row(
+    children: [
+      Expanded(
+        flex: 3,
+        child: Center(
+          child: Text(course.name),
+        ),
       ),
-      DataCell(Text(course.code)),
-      DataCell(Text("sem")),
-      DataCell(Text(course.paperSetterName)),
-      // DataCell(
-      //   InkWell(
-      //     onTap: () {
-      //       // if(questionPaperDetailContainerassignmentStatus==0){
-      //       //   questionPaperDetailContainer.currentCourseIndex.value = courseIndex;
-      //       // }
-      //     },
-      //     child: Container(
-      //         decoration: BoxDecoration(
-      //             color:questionPaperReviewController.currentCourseIndex.value ==
-      //                 courseIndex
-      //                 ? Colors.blue
-      //                 : Colors.transparent,
-      //             borderRadius: BorderRadius.circular(5),
-      //             border: Border.all(color: Colors.blue)),
-      //         child: Padding(
-      //           padding: const EdgeInsets.all(8.0),
-      //           child: Text(course.paperSetterName.value == "NA"
-      //               ? "Select Paper Setter"
-      //               : course.paperSetterName.value),
-      //         )),
-      //   ),
-      // ),
-      DataCell(Text(course.status)),
-      DataCell(Row(children: [Expanded(
+      Expanded(
+        flex: 1,
+        child: Center(
+          child: Text(course.code),
+        ),
+      ),
+      Expanded(
+        flex: 1,
+        child: Center(
+          child: Text(course.status),
+        ),
+      ),
+      Expanded(
         flex: 2,
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.green,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text('Accept'),
+        child: Center(
+          child: Text(course.paperSetterName),
+        ),
+      ),
+      Expanded(
+        flex: 2,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.white60),
+                borderRadius: BorderRadius.circular(10)
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Column(
+                  children: [
+                    Text(
+                        "Message wdnwd wdnwodniowd wjdnwonxkw xwqxmwqoidnwqx wqkkxnoqwkndkwq dm,qwx kwqkdnkwoqdn",
+                    textAlign: TextAlign.center,),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
       ),
-        SizedBox(width: 4),
-        Expanded(
-          flex: 2,
+      Expanded(
+        flex: 3,
+        child: Center(
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.green,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('Accept'),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 4),
+              Expanded(
+                flex: 2,
+                child: GestureDetector(
+                  onTap: () {
+                    _showInputDialog(context, int.parse("7"),
+                        "paper['course_id']!", "jsnfjsnf");
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Review'),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 8),
+            ],
+          ),
+        ),
+      ),
+      SizedBox(
+        width: 5,
+      ),
+      Expanded(
+        flex: 1,
+        child: Center(
           child: GestureDetector(
-            onTap: () {
-              _showInputDialog(context,int.parse("7"),"paper['course_id']!","jsnfjsnf");
+            onTap: () async {
+              await launchLink(course.qpDocUrl);
             },
             child: Container(
               decoration: BoxDecoration(
@@ -141,19 +212,20 @@ DataRow assignmentTile(BuildContext context,Course course, int courseIndex) {
               ),
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('Review'),
+                  padding: const EdgeInsets.all(6.0),
+                  child: Icon(Icons.download),
                 ),
               ),
             ),
           ),
         ),
-        SizedBox(height: 8),],)),
-      DataCell(Text("Message")),
+      ),
     ],
   );
 }
-void _showInputDialog(BuildContext context,int examId,String courseCode,String email) {
+
+void _showInputDialog(
+    BuildContext context, int examId, String courseCode, String email) {
   TextEditingController _textFieldController = TextEditingController();
 
   showDialog(
@@ -175,17 +247,17 @@ void _showInputDialog(BuildContext context,int examId,String courseCode,String e
           ElevatedButton(
             style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
             child: Text('Submit'),
-            onPressed: ()async {
+            onPressed: () async {
               // Retrieve the input value
               String message = _textFieldController.text;
 
               // Perform any action with the input value (e.g., submit it)
               print('Submitted message: $message');
-              var data=json.encode({
-                "exam_id":examId,
-                "tracking_token":"tracking",
-                "course_code":courseCode,
-                "email":email
+              var data = json.encode({
+                "exam_id": examId,
+                "tracking_token": "tracking",
+                "course_code": courseCode,
+                "email": email
               });
               print(data);
               //TODO:write function to post comment

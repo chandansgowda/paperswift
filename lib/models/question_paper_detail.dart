@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:get/get.dart';
-
 class QuestionPaperDetail {
   final List<Department> departments;
   final int count;
@@ -11,19 +9,24 @@ class QuestionPaperDetail {
     required this.count,
   });
 
-  factory QuestionPaperDetail.fromRawJson(String str) => QuestionPaperDetail.fromJson(json.decode(str));
+  factory QuestionPaperDetail.fromJson(Map<String, dynamic> json) {
+    List<Department> departments = [];
+    json.forEach((departmentName, coursesData) {
+      departments.add(Department.fromJson({departmentName: coursesData}));
+    });
+    return QuestionPaperDetail(
+      departments: departments,
+      count: json.length,
+    );
+  }
 
-  String toRawJson() => json.encode(toJson());
-
-  factory QuestionPaperDetail.fromJson(Map<String, dynamic> json) => QuestionPaperDetail(
-    departments: List<Department>.from(json["departments"].map((x) => Department.fromJson(x))),
-    count: json["count"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "departments": List<dynamic>.from(departments.map((x) => x.toJson())),
-    "count": count,
-  };
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> json = {};
+    departments.forEach((department) {
+      json[department.name] = department.courses.map((course) => course.toJson()).toList();
+    });
+    return json;
+  }
 }
 
 class Department {
@@ -31,69 +34,68 @@ class Department {
   final List<Course> courses;
 
   Department({
-    required this.courses,
     required this.name,
+    required this.courses,
   });
 
-  factory Department.fromRawJson(String str) => Department.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory Department.fromJson(Map<String, dynamic> json) => Department(
-    name: json.keys.first,
-    courses: List<Course>.from(json[json.keys.first]["courses"].map((x) => Course.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "courses": List<dynamic>.from(courses.map((x) => x.toJson())),
-  };
+  factory Department.fromJson(Map<String, dynamic> json) {
+    List<Course> coursesList = [];
+    json.forEach((departmentName, coursesData) {
+      coursesData.forEach((courseData) {
+        coursesList.add(Course.fromJson(courseData));
+      });
+    });
+    return Department(
+      name: json.keys.first,
+      courses: coursesList,
+    );
+  }
 }
 
 class Course {
   final String code;
   final String name;
-  final int scheme;
-  final dynamic syllabusDocUrl;
-  final String department;
-  final int sem;
+  final String paperSetterName;
+  final DateTime assignedDate;
   final String status;
-  late String paperSetterName;
-  late int paperSetterId;
+  final DateTime submissionDate;
+  final String qpDocUrl;
+  final String trackingToken;
 
   Course({
     required this.code,
     required this.name,
-    required this.scheme,
-    required this.syllabusDocUrl,
-    required this.department,
-    required this.sem,
-    required this.status,
     required this.paperSetterName,
-    required this.paperSetterId
+    required this.assignedDate,
+    required this.status,
+    required this.submissionDate,
+    required this.qpDocUrl,
+    required this.trackingToken,
   });
 
-  factory Course.fromRawJson(String str) => Course.fromJson(json.decode(str));
+  factory Course.fromJson(Map<String, dynamic> json) {
+    return Course(
+      code: json['course_id'],
+      name: json['course_name'],
+      paperSetterName: json['paper_setter'],
+      assignedDate: DateTime.parse(json['assigned_date']),
+      status: json['status'],
+      submissionDate: json['submission_date'] != null ? DateTime.parse(json['submission_date']) : DateTime(0),
+      qpDocUrl: json['qp_doc_url'],
+      trackingToken: json['tracking_token'],
+    );
+  }
 
-  String toRawJson() => json.encode(toJson());
-
-  factory Course.fromJson(Map<String, dynamic> json) => Course(
-      code: json["code"],
-      name: json["name"],
-      scheme: json["scheme"],
-      syllabusDocUrl: json["syllabus_doc_url"],
-      department: json["department"],
-      sem: json["sem"],
-      status: json["assignment_status"],
-      paperSetterId: json["paper_setter_id"],
-      paperSetterName: json["paper_setter_name"]
-  );
-
-  Map<String, dynamic> toJson() => {
-    "code": code,
-    "name": name,
-    "scheme": scheme,
-    "syllabus_doc_url": syllabusDocUrl,
-    "department": department,
-    "sem": sem,
-  };
+  Map<String, dynamic> toJson() {
+    return {
+      "course_id": code,
+      "course_name": name,
+      "paper_setter": paperSetterName,
+      "assigned_date": assignedDate.toIso8601String(),
+      "status": status,
+      "submission_date": submissionDate.toIso8601String(),
+      "qp_doc_url": qpDocUrl,
+      "tracking_token": trackingToken,
+    };
+  }
 }

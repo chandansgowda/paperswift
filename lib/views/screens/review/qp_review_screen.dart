@@ -18,7 +18,17 @@ class QuestionPaperReviewScreen extends StatelessWidget {
     QuestionPaperReviewController questionPaperReviewController=Get.find<QuestionPaperReviewController>();
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
+        body: questionPaperReviewController.questionPaperDetail.departments.length==0?Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [IconButton(
+          onPressed: () {
+            Get.close(1);
+          },
+          icon: Icon(Icons.close),
+        ),
+        Center(child: Container(
+            height: Get.height*0.7,
+            child: Center(child: Text("No data"))))],):SingleChildScrollView(
           primary: false,
           padding: EdgeInsets.all(defaultPadding),
           child: Column(
@@ -87,11 +97,11 @@ class QuestionPaperReviewScreen extends StatelessWidget {
                             Responsive(
                               mobile: DepartmentTileGridView(
                                 crossAxisCount: _size.width < 650 ? 2 : 4,
-                                childAspectRatio: _size.width < 650 ? 1.3 : 1,
+                                childAspectRatio: _size.width < 650 ? 1.3: 1,
                               ),
                               tablet: DepartmentTileGridView(),
                               desktop: DepartmentTileGridView(
-                                childAspectRatio: 4,
+                                childAspectRatio: 5,
                               ),
                             ),
                           ],
@@ -114,7 +124,7 @@ class QuestionPaperReviewScreen extends StatelessWidget {
 class DepartmentTileGridView extends StatelessWidget {
   DepartmentTileGridView({
     Key? key,
-    this.crossAxisCount = 5,
+    this.crossAxisCount = 6,
     this.childAspectRatio = 0.5,
   }) : super(key: key);
 
@@ -167,7 +177,6 @@ class DepartmentTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 5),
         decoration: BoxDecoration(
           color: bgColor,
           borderRadius: const BorderRadius.all(Radius.circular(10)),

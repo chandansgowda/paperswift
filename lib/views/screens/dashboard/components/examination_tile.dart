@@ -72,7 +72,6 @@ class ExaminationTile extends StatelessWidget {
             children: [
               GestureDetector(
                 onTap: ()async{
-                  examinationDetailController.examinationId=eid;
                   await questionPaperReviewController.fetchData(eid);
                   Get.toNamed(AppRoutes.qpReviewScreen);
                 },

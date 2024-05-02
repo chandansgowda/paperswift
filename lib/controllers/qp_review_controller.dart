@@ -26,9 +26,13 @@ class QuestionPaperReviewController extends GetxController{
   Future<void> fetchData(int examId) async {
     try {
       dynamic response =await api.getQuestionPaperDetails(examId);
-      questionPaperDetail=QuestionPaperDetail.fromJson(response);
-      print(questionPaperDetail.departments[0].name);
-
+      if(response.toString()!='{}') {
+        questionPaperDetail = QuestionPaperDetail.fromJson(response);
+        print(questionPaperDetail.departments[0].name);
+      }
+      else{
+        questionPaperDetail=QuestionPaperDetail(departments: [], count: 0);
+      }
     } catch (e) {
       throw Exception(e);
     }

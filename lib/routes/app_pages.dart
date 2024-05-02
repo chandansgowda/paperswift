@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:paperswift/bindings/exam_detail_binding.dart';
 import 'package:paperswift/bindings/home_binding.dart';
+import 'package:paperswift/bindings/qp_review_binding.dart';
 import 'package:paperswift/controllers/main_controller.dart';
 import 'package:paperswift/views/screens/document_upload/document_upload_screen.dart';
 import 'package:paperswift/views/screens/exam/exam_details_screen.dart';
@@ -33,7 +34,8 @@ class AppPages {
         name: AppRoutes.docsUploadScreen, page: () => DocumentUploadScreen()),
     GetPage(
         name: AppRoutes.qpReviewScreen,
-        page: () => QuestionPaperReviewScreen()),
+        page: () => QuestionPaperReviewScreen(),
+    binding: QuestionPaperReviewBinding()),
     GetPage(
       name: AppRoutes.examDetails,
       page: () => ExamDetailsScreen(),
