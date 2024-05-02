@@ -74,7 +74,7 @@ class ExaminationTile extends StatelessWidget {
                 onTap: ()async{
                   examinationDetailController.examinationId=eid;
                   await questionPaperReviewController.fetchData(eid);
-                  Get.toNamed(AppRoutes.qpReviewScreen);
+                  Get.toNamed(AppRoutes.qpReviewScreen,arguments: "${degree} - ${title} ( ${examType} Exam )");
                 },
                 child: Container(
                   decoration: BoxDecoration(

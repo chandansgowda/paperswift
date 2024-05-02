@@ -61,6 +61,7 @@ class Course {
   final DateTime submissionDate;
   final String qpDocUrl;
   final String trackingToken;
+  final String message;
 
   Course({
     required this.code,
@@ -71,6 +72,7 @@ class Course {
     required this.submissionDate,
     required this.qpDocUrl,
     required this.trackingToken,
+    required this.message
   });
 
   factory Course.fromJson(Map<String, dynamic> json) {
@@ -83,6 +85,7 @@ class Course {
       submissionDate: json['submission_date'] != null ? DateTime.parse(json['submission_date']) : DateTime(0),
       qpDocUrl: json['qp_doc_url'],
       trackingToken: json['tracking_token'],
+      message: json['comment'] ?? "No latest review"
     );
   }
 

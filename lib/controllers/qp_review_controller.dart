@@ -33,6 +33,7 @@ class QuestionPaperReviewController extends GetxController{
       else{
         questionPaperDetail=QuestionPaperDetail(departments: [], count: 0);
       }
+      update();
     } catch (e) {
       throw Exception(e);
     }
