@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paperswift/controllers/examination_detail_controller.dart';
 import 'package:paperswift/controllers/main_controller.dart';
 import 'package:paperswift/controllers/qp_review_controller.dart';
 import 'package:paperswift/services/api_service.dart';

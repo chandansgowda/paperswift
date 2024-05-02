@@ -123,6 +123,15 @@ class ApiService {
     }
   }
 
+  Future<dynamic> acceptPaper(var data) async {
+    final response = await dio.post('assignment/accept_question_paper', data: data);
+    if (response.statusCode == 200) {
+      print("Accepted the paper");
+      return response.data;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
   Future<dynamic> getQuestionPaperDetails(int examId) async {
     //TODO:Change the link
     final response = await dio.get('assignment/submitted_papers/$examId');

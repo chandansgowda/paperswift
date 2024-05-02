@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:paperswift/controllers/examination_detail_controller.dart';
 import 'package:paperswift/controllers/main_controller.dart';
 import 'package:paperswift/controllers/qp_review_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -97,6 +98,7 @@ Row assignmentTile(BuildContext context, Course course, int courseIndex) {
       webOnlyWindowName: isNewTab ? '_blank' : '_self',
     );
   }
+  ExaminationDetailController examinationDetailController=Get.find<ExaminationDetailController>();
 
   return Row(
     children: [
@@ -155,15 +157,26 @@ Row assignmentTile(BuildContext context, Course course, int courseIndex) {
             children: [
               Expanded(
                 flex: 2,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.green,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('Accept'),
+                child: GestureDetector(
+                  onTap: () async{
+                    var data = json.encode({
+                      "exam_id": examinationDetailController.examinationId,
+                      "tracking_token": course.trackingToken,
+                      "course_code": course.code
+                    });
+                    print(data);
+                    await Get.find<MainController>().api.acceptPaper(data);
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.green,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text('Accept'),
+                      ),
                     ),
                   ),
                 ),
@@ -173,8 +186,8 @@ Row assignmentTile(BuildContext context, Course course, int courseIndex) {
                 flex: 2,
                 child: GestureDetector(
                   onTap: () {
-                    _showInputDialog(context, int.parse("7"),
-                        "paper['course_id']!", "jsnfjsnf");
+                    _showInputDialog(context, examinationDetailController.examinationId,
+                        course.code, "admin@admin.com",course.trackingToken);
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -225,7 +238,7 @@ Row assignmentTile(BuildContext context, Course course, int courseIndex) {
 }
 
 void _showInputDialog(
-    BuildContext context, int examId, String courseCode, String email) {
+    BuildContext context, int examId, String courseCode, String email,String trackingToken) {
   TextEditingController _textFieldController = TextEditingController();
 
   showDialog(
@@ -250,18 +263,18 @@ void _showInputDialog(
             onPressed: () async {
               // Retrieve the input value
               String message = _textFieldController.text;
-
               // Perform any action with the input value (e.g., submit it)
               print('Submitted message: $message');
               var data = json.encode({
                 "exam_id": examId,
-                "tracking_token": "tracking",
+                "tracking_token": trackingToken,
                 "course_code": courseCode,
-                "email": email
+                "email": email,
+                "comment":message
               });
               print(data);
               //TODO:write function to post comment
-              // await Get.find<MainController>().api.postBulkPaperSetters(data);
+              await Get.find<MainController>().api.postComment(data);
               // Close the dialog
               Navigator.pop(context);
             },
