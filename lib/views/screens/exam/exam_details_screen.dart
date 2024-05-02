@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:paperswift/bindings/home_binding.dart';
 import 'package:paperswift/controllers/examination_detail_controller.dart';
 import 'package:paperswift/controllers/main_controller.dart';
+import 'package:paperswift/routes/app_routes.dart';
 import 'package:paperswift/views/screens/dashboard/components/storage_details.dart';
 import 'package:paperswift/views/screens/exam/components/teachers_list_container.dart';
 import 'package:paperswift/views/screens/exam/components/assignment_list_container.dart';
+import 'package:paperswift/views/screens/home/home_screen.dart';
 import 'package:slider_button/slider_button.dart';
 
 import '../../../utils/constants.dart';
@@ -18,6 +21,7 @@ class ExamDetailsScreen extends StatelessWidget {
     final Size _size = MediaQuery.of(context).size;
     ExaminationDetailController examinationDetailController =
         Get.find<ExaminationDetailController>();
+    String title =Get.arguments;
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -49,7 +53,7 @@ class ExamDetailsScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  "Exam title",
+                                  title,
                                   style:
                                       Theme.of(context).textTheme.titleMedium,
                                 ),
@@ -95,7 +99,7 @@ class ExamDetailsScreen extends StatelessWidget {
                                         "assignments": assignments
                                       });
                                       print(data);
-                                      _showInputDialog(context, data);
+                                      _showConfirmationDialog(context, data);
                                     }
                                   },
                                   child: Text("Submit"),
@@ -193,7 +197,6 @@ class DepartmentTile extends StatelessWidget {
   final Color bgColor;
 
   DepartmentTile({super.key, required this.title, required this.bgColor});
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -206,10 +209,11 @@ class DepartmentTile extends StatelessWidget {
   }
 }
 
-void _showInputDialog(context, String data) {
+Future<void> _showConfirmationDialog(context, String data) async {
   showDialog(
     context: context,
     builder: (BuildContext context) {
+      ExaminationDetailController examinationDetailController=Get.find<ExaminationDetailController>();
       return AlertDialog(
         backgroundColor: bgColor,
         title: Text('Are you sure?'),
@@ -225,7 +229,9 @@ void _showInputDialog(context, String data) {
                     .api
                     .postBulkPaperSetters(data);
                 //TODO:Catch the error and display proper message
-                Navigator.pop(context);
+                examinationDetailController.currentCourseIndex.value = 500;
+                examinationDetailController.currentDepartmentIndex.value = 0;
+                Get.offAllNamed(AppRoutes.home);
                 return true;
               },
               label: Text(
