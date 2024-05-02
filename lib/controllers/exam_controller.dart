@@ -19,6 +19,7 @@ class ExamController extends GetxController{
   late FlutterSecureStorage storage;
   RxList<Examination> exams=<Examination>[].obs;
   Logger log = Logger();
+  RxBool isLoading=false.obs;
 
   @override
   void onInit() async {
@@ -31,6 +32,7 @@ class ExamController extends GetxController{
 
   Future<void> fetchData() async {
     try {
+      isLoading.value=true;
       List<Examination> exams_temp=[];
       dynamic response =await api.getAllExams();
       for(dynamic data in response){
@@ -40,6 +42,9 @@ class ExamController extends GetxController{
     } catch (e) {
       print(e);
       throw Exception(e);
+    }
+    finally{
+      isLoading.value=false;
     }
   }
 

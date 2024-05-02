@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:paperswift/controllers/exam_controller.dart';
+import 'package:paperswift/models/examination.dart';
 
 import '../../../../utils/constants.dart';
 import 'deletethis1.dart';
 
 
 class PreviousExams extends StatelessWidget {
-  const PreviousExams({
-    Key? key,
-  }) : super(key: key);
-
+  ExamController examController=Get.find<ExamController>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,25 +27,33 @@ class PreviousExams extends StatelessWidget {
           ),
           SizedBox(
             width: double.infinity,
-            child: DataTable(
-              columnSpacing: defaultPadding,
-              // minWidth: 600,
-              columns: [
-                DataColumn(
-                  label: Text("Examination"),
-                ),
-                DataColumn(
-                  label: Text("Degree"),
-                ),
-                DataColumn(
-                  label: Text("Date"),
-                ),
-              ],
-              rows: List.generate(
-                previousExaminations.length,
-                    (index) => recentFileDataRow(previousExaminations[index]),
-              ),
-            ),
+            child: Obx(()
+            {List<Examination> previousExams = [];
+            for (var element in examController.exams) {
+              if (element.isExamCompleted) {
+                previousExams.add(element);
+              }
+            }
+                return DataTable(
+                  columnSpacing: defaultPadding,
+                  // minWidth: 600,
+                  columns: [
+                    DataColumn(
+                      label: Text("Examination"),
+                    ),
+                    DataColumn(
+                      label: Text("Degree"),
+                    ),
+                    DataColumn(
+                      label: Text("Date"),
+                    ),
+                  ],
+                  rows: List.generate(
+                    previousExams.length,
+                    (index) => recentFileDataRow(previousExams[index]),
+                  ),
+                );
+              },),
           ),
         ],
       ),
@@ -53,14 +61,14 @@ class PreviousExams extends StatelessWidget {
   }
 }
 
-DataRow recentFileDataRow(RecentFile fileInfo) {
+DataRow recentFileDataRow(Examination fileInfo) {
   return DataRow(
     cells: [
       DataCell(
-        Text(fileInfo.title!),
+        Text("${fileInfo.sem} - Sem ${fileInfo.isSupplementary?"Supplementary":"Regular"}"),
       ),
       DataCell(Text(fileInfo.degree!)),
-      DataCell(Text(fileInfo.date!)),
+      DataCell(Text("${fileInfo.paperSubmissionDeadline.day}-${fileInfo.paperSubmissionDeadline.month}-${fileInfo.paperSubmissionDeadline.year}")),
     ],
   );
 }

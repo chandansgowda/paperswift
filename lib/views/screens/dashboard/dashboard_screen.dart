@@ -1,15 +1,18 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:paperswift/controllers/exam_controller.dart';
 import 'package:paperswift/views/screens/dashboard/components/previous_exams.dart';
 
 import '../../../utils/constants.dart';
 import '../../../utils/responsive.dart';
 import 'components/header.dart';
 
-import 'components/my_fields.dart';
+import 'components/in_progress_exams_container.dart';
 import 'components/storage_details.dart';
 
 class DashboardScreen extends StatelessWidget {
+  ExamController examController=Get.find<ExamController>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -20,14 +23,16 @@ class DashboardScreen extends StatelessWidget {
           children: [
             Header(label: "Dashboard",),
             SizedBox(height: defaultPadding),
-            Row(
+            Obx(() => examController.isLoading.value?SizedBox(
+                height: Get.height*0.8,
+                child: Center(child: CircularProgressIndicator(),)):Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   flex: 5,
                   child: Column(
                     children: [
-                      MyFiles(),
+                      InProgressExamsContainer(),
                       SizedBox(height: defaultPadding),
                       PreviousExams(),
                       if (Responsive.isMobile(context))
@@ -45,7 +50,8 @@ class DashboardScreen extends StatelessWidget {
                     child: StorageDetails(),
                   ),
               ],
-            )
+            ))
+
           ],
         ),
       ),
