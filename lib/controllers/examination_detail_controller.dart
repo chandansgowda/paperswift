@@ -13,6 +13,8 @@ class ExaminationDetailController extends GetxController{
   //TODO:Change the initial value
   RxInt currentCourseIndex=500.obs;
   late int examinationId;
+  RxBool isLoading=false.obs;
+
 
   @override
   void onInit() async {
@@ -25,12 +27,16 @@ class ExaminationDetailController extends GetxController{
 
   Future<void> fetchData(int examId) async {
     try {
+      isLoading.value=true;
       dynamic response =await api.getExaminationDetails(examId);
       examinationDetail=ExaminationDetail.fromJson(response);
       print(examinationDetail.departments[0].name);
 
     } catch (e) {
       throw Exception(e);
+    }
+    finally{
+      isLoading.value=false;
     }
   }
 }

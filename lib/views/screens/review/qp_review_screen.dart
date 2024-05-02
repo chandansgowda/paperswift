@@ -16,8 +16,12 @@ class QuestionPaperReviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size _size = MediaQuery.of(context).size;
-    QuestionPaperReviewController questionPaperReviewController=Get.find<QuestionPaperReviewController>();
+
     String title=Get.arguments;
+
+    QuestionPaperReviewController questionPaperReviewController=Get.find<QuestionPaperReviewController>();
+    ExaminationDetailController examinationDetailController=Get.find<ExaminationDetailController>();
+    questionPaperReviewController.fetchData(examinationDetailController.examinationId);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -36,45 +40,49 @@ class QuestionPaperReviewScreen extends StatelessWidget {
                 icon: Icon(Icons.close),
               ),
               SizedBox(height: defaultPadding),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: Column(
-                      children: [
-                        Text(
-                          title,
-                          style:
-                          Theme.of(context).textTheme.titleLarge,
-                        ),
-                        SizedBox(height: defaultPadding),
-                        GetBuilder<QuestionPaperReviewController>(builder: (controller){
-                          return controller.questionPaperDetail.departments.isEmpty?SizedBox(
-                              height:Get.height*0.7,
-                              child: Center(child: Text("No Papers To Review",style: TextStyle(fontSize: 20),),)):Column(
-                            children: [
-                              Responsive(
-                                mobile: DepartmentTileGridView(
-                                  crossAxisCount: _size.width < 650 ? 2 : 4,
-                                  childAspectRatio: _size.width < 650 ? 1.3: 1,
+              Obx((){
+                return questionPaperReviewController.isLoading.value?SizedBox(height:Get.height*0.75,child: Center(child: CircularProgressIndicator(),)):
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: Column(
+                        children: [
+                          Text(
+                            title,
+                            style:
+                            Theme.of(context).textTheme.titleLarge,
+                          ),
+                          SizedBox(height: defaultPadding),
+                          GetBuilder<QuestionPaperReviewController>(builder: (controller){
+                            return controller.questionPaperDetail.departments.isEmpty?SizedBox(
+                                height:Get.height*0.7,
+                                child: Center(child: Text("No Papers To Review",style: TextStyle(fontSize: 20),),)):Column(
+                              children: [
+                                Responsive(
+                                  mobile: DepartmentTileGridView(
+                                    crossAxisCount: _size.width < 650 ? 2 : 4,
+                                    childAspectRatio: _size.width < 650 ? 1.3: 1,
+                                  ),
+                                  tablet: DepartmentTileGridView(),
+                                  desktop: DepartmentTileGridView(
+                                    childAspectRatio: 5,
+                                  ),
                                 ),
-                                tablet: DepartmentTileGridView(),
-                                desktop: DepartmentTileGridView(
-                                  childAspectRatio: 5,
-                                ),
-                              ),
-                              SizedBox(height: defaultPadding),
-                              QuestionPaperDetailContainer(),
-                            ],
-                          );
-                        })
+                                SizedBox(height: defaultPadding),
+                                QuestionPaperDetailContainer(),
+                              ],
+                            );
+                          })
 
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              )
+                  ],
+                )
+                ;
+              })
             ],
           ),
         ),

@@ -73,7 +73,6 @@ class ExaminationTile extends StatelessWidget {
               GestureDetector(
                 onTap: ()async{
                   examinationDetailController.examinationId=eid;
-                  await questionPaperReviewController.fetchData(eid);
                   Get.toNamed(AppRoutes.qpReviewScreen,arguments: "$degree - $title ( $examType Exam )");
                 },
                 child: Container(
@@ -91,7 +90,6 @@ class ExaminationTile extends StatelessWidget {
               GestureDetector(
                 onTap: ()async{
                   examinationDetailController.examinationId=eid;
-                  await examinationDetailController.fetchData(eid);
                   Get.toNamed(AppRoutes.examDetails,arguments: "$degree - $title ( $examType Exam )");
                 },
                 child: Container(

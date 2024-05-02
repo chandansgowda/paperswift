@@ -21,7 +21,9 @@ class ExamDetailsScreen extends StatelessWidget {
     final Size _size = MediaQuery.of(context).size;
     ExaminationDetailController examinationDetailController =
         Get.find<ExaminationDetailController>();
-    String title =Get.arguments;
+    String title = Get.arguments;
+    examinationDetailController
+        .fetchData(examinationDetailController.examinationId);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -40,103 +42,121 @@ class ExamDetailsScreen extends StatelessWidget {
                 icon: Icon(Icons.close),
               ),
               SizedBox(height: defaultPadding),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: Column(
-                      children: [
-                        Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Obx(() {
+                return examinationDetailController.isLoading.value
+                    ? SizedBox(
+                        height: Get.height * 0.75,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      )
+                    : Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 5,
+                            child: Column(
                               children: [
-                                Text(
-                                  title,
-                                  style:
-                                      Theme.of(context).textTheme.titleMedium,
-                                ),
-                                ElevatedButton(
-                                  style: TextButton.styleFrom(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: defaultPadding * 1.5,
-                                      vertical: defaultPadding /
-                                          (Responsive.isMobile(context)
-                                              ? 2
-                                              : 1),
+                                Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          title,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium,
+                                        ),
+                                        ElevatedButton(
+                                          style: TextButton.styleFrom(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: defaultPadding * 1.5,
+                                              vertical: defaultPadding /
+                                                  (Responsive.isMobile(context)
+                                                      ? 2
+                                                      : 1),
+                                            ),
+                                          ),
+                                          onPressed: () async {
+                                            var assignments = [];
+                                            assignments.addAll(
+                                                examinationDetailController
+                                                    .examinationDetail
+                                                    .departments
+                                                    .expand((department) =>
+                                                        department.courses
+                                                            .map((course) {
+                                                          if (course.paperSetterName
+                                                                      .value !=
+                                                                  "NA" &&
+                                                              (course.status ==
+                                                                      "Invite Rejected" ||
+                                                                  course.status ==
+                                                                      "NA")) {
+                                                            return {
+                                                              "course_code":
+                                                                  course.code,
+                                                              "paper_setter_id":
+                                                                  course
+                                                                      .paperSetterId
+                                                            };
+                                                          }
+                                                        })));
+                                            assignments.removeWhere(
+                                                (element) => element == null);
+                                            if (assignments.isNotEmpty) {
+                                              var data = json.encode({
+                                                "exam_id":
+                                                    examinationDetailController
+                                                        .examinationId,
+                                                "assignments": assignments
+                                              });
+                                              print(data);
+                                              _showConfirmationDialog(
+                                                  context, data);
+                                            }
+                                          },
+                                          child: Text("Submit"),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  onPressed: () async {
-                                    var assignments = [];
-                                    assignments.addAll(
-                                        examinationDetailController
-                                            .examinationDetail.departments
-                                            .expand((department) => department
-                                                    .courses
-                                                    .map((course) {
-                                                  if (course.paperSetterName
-                                                              .value !=
-                                                          "NA" &&
-                                                      (course.status ==
-                                                              "Invite Rejected" ||
-                                                          course.status ==
-                                                              "NA")) {
-                                                    return {
-                                                      "course_code":
-                                                          course.code,
-                                                      "paper_setter_id":
-                                                          course.paperSetterId
-                                                    };
-                                                  }
-                                                })));
-                                    assignments.removeWhere(
-                                        (element) => element == null);
-                                    if (assignments.isNotEmpty) {
-                                      var data = json.encode({
-                                        "exam_id": examinationDetailController
-                                            .examinationId,
-                                        "assignments": assignments
-                                      });
-                                      print(data);
-                                      _showConfirmationDialog(context, data);
-                                    }
-                                  },
-                                  child: Text("Submit"),
+                                    SizedBox(height: defaultPadding),
+                                    Responsive(
+                                      mobile: DepartmentTileGridView(
+                                        crossAxisCount:
+                                            _size.width < 650 ? 2 : 4,
+                                        childAspectRatio:
+                                            _size.width < 650 ? 1.3 : 1,
+                                      ),
+                                      tablet: DepartmentTileGridView(),
+                                      desktop: DepartmentTileGridView(
+                                        childAspectRatio: 4,
+                                      ),
+                                    ),
+                                  ],
                                 ),
+                                SizedBox(height: defaultPadding),
+                                AssignmentListContainer(),
+                                if (Responsive.isMobile(context))
+                                  SizedBox(height: defaultPadding),
+                                if (Responsive.isMobile(context))
+                                  StorageDetails(),
                               ],
                             ),
-                            SizedBox(height: defaultPadding),
-                            Responsive(
-                              mobile: DepartmentTileGridView(
-                                crossAxisCount: _size.width < 650 ? 2 : 4,
-                                childAspectRatio: _size.width < 650 ? 1.3 : 1,
-                              ),
-                              tablet: DepartmentTileGridView(),
-                              desktop: DepartmentTileGridView(
-                                childAspectRatio: 4,
-                              ),
+                          ),
+                          if (!Responsive.isMobile(context))
+                            SizedBox(width: defaultPadding),
+                          // On Mobile means if the screen is less than 850 we don't want to show it
+                          if (!Responsive.isMobile(context))
+                            Expanded(
+                              flex: 2,
+                              child: TeachersListContainer(),
                             ),
-                          ],
-                        ),
-                        SizedBox(height: defaultPadding),
-                        AssignmentListContainer(),
-                        if (Responsive.isMobile(context))
-                          SizedBox(height: defaultPadding),
-                        if (Responsive.isMobile(context)) StorageDetails(),
-                      ],
-                    ),
-                  ),
-                  if (!Responsive.isMobile(context))
-                    SizedBox(width: defaultPadding),
-                  // On Mobile means if the screen is less than 850 we don't want to show it
-                  if (!Responsive.isMobile(context))
-                    Expanded(
-                      flex: 2,
-                      child: TeachersListContainer(),
-                    ),
-                ],
-              )
+                        ],
+                      );
+              })
             ],
           ),
         ),
@@ -213,7 +233,8 @@ Future<void> _showConfirmationDialog(context, String data) async {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      ExaminationDetailController examinationDetailController=Get.find<ExaminationDetailController>();
+      ExaminationDetailController examinationDetailController =
+          Get.find<ExaminationDetailController>();
       return AlertDialog(
         backgroundColor: bgColor,
         title: Text('Are you sure?'),
@@ -225,9 +246,7 @@ Future<void> _showConfirmationDialog(context, String data) async {
               buttonColor: primaryColor,
               action: () async {
                 ///Do something here OnSlide
-                await Get.find<MainController>()
-                    .api
-                    .postBulkPaperSetters(data);
+                await Get.find<MainController>().api.postBulkPaperSetters(data);
                 //TODO:Catch the error and display proper message
                 examinationDetailController.currentCourseIndex.value = 500;
                 examinationDetailController.currentDepartmentIndex.value = 0;
@@ -241,7 +260,9 @@ Future<void> _showConfirmationDialog(context, String data) async {
                     fontWeight: FontWeight.w500,
                     fontSize: 17),
               ),
-              icon: Icon(Icons.done,),
+              icon: Icon(
+                Icons.done,
+              ),
             ),
           ),
         ],

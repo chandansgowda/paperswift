@@ -13,6 +13,7 @@ class QuestionPaperReviewController extends GetxController{
   //TODO:Change the initial value
   RxInt currentCourseIndex=500.obs;
   late int examinationId;
+  RxBool isLoading=false.obs;
 
   @override
   void onInit() async {
@@ -25,6 +26,7 @@ class QuestionPaperReviewController extends GetxController{
 
   Future<void> fetchData(int examId) async {
     try {
+      isLoading.value=true;
       dynamic response =await api.getQuestionPaperDetails(examId);
       if(response.toString()!='{}') {
         questionPaperDetail = QuestionPaperDetail.fromJson(response);
@@ -36,6 +38,9 @@ class QuestionPaperReviewController extends GetxController{
       update();
     } catch (e) {
       throw Exception(e);
+    }
+    finally{
+      isLoading.value=false;
     }
   }
 }

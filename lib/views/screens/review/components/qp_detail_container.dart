@@ -21,79 +21,83 @@ class QuestionPaperDetailContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetBuilder<QuestionPaperReviewController>(
       builder: (controller) {
-        return controller
-            .questionPaperDetail
-            .departments[controller
-            .currentDepartmentIndex.value]
-            .courses.isEmpty?Center(child: Text("No data 1")):Container(
-          padding: EdgeInsets.all(defaultPadding),
-          decoration: BoxDecoration(
-            color: secondaryColor,
-            borderRadius: const BorderRadius.all(Radius.circular(10)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 3,
-                        child: Center(child: Text("Course name")),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Center(child: Text("Course code")),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Center(child: Text("Status")),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Center(child: Text("Assigned to")),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: Center(child: Text("Latest review")),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Center(child: Text("Review")),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Center(child: Text("Download")),
-                      ),
-                    ],
-                  ),
-                  Divider(
-                    thickness: 2,
-                  ),
-                  Column(
-                    children: List.generate(
-                      controller
-                          .questionPaperDetail
-                          .departments[controller
-                              .currentDepartmentIndex.value]
-                          .courses
-                          .length,
-                      (index) => assignmentTile(
-                          context,
-                          controller.questionPaperDetail
-                              .departments[controller
-                                  .currentDepartmentIndex.value]
-                              .courses[index],
-                          index),
+        return Obx((){
+          return questionPaperReviewController.isLoading.value?SizedBox(
+            height: Get.height*0.75,
+            child: CircularProgressIndicator(),):controller
+              .questionPaperDetail
+              .departments[controller
+              .currentDepartmentIndex.value]
+              .courses.isEmpty?Center(child: Text("No data 1")):Container(
+            padding: EdgeInsets.all(defaultPadding),
+            decoration: BoxDecoration(
+              color: secondaryColor,
+              borderRadius: const BorderRadius.all(Radius.circular(10)),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Center(child: Text("Course name")),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Center(child: Text("Course code")),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Center(child: Text("Status")),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Center(child: Text("Assigned to")),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Center(child: Text("Latest review")),
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Center(child: Text("Review")),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Center(child: Text("Download")),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        );
-      }
+                    Divider(
+                      thickness: 2,
+                    ),
+                    Column(
+                      children: List.generate(
+                        controller
+                            .questionPaperDetail
+                            .departments[controller
+                            .currentDepartmentIndex.value]
+                            .courses
+                            .length,
+                            (index) => assignmentTile(
+                            context,
+                            controller.questionPaperDetail
+                                .departments[controller
+                                .currentDepartmentIndex.value]
+                                .courses[index],
+                            index),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+;
+        });}
     );
   }
 }
