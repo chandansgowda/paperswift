@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:paperswift/controllers/exam_controller.dart';
 import 'package:paperswift/views/screens/dashboard/components/previous_exams.dart';
+import 'package:paperswift/views/screens/dashboard/components/status_data_container.dart';
 
 import '../../../utils/constants.dart';
 import '../../../utils/responsive.dart';
@@ -37,7 +38,7 @@ class DashboardScreen extends StatelessWidget {
                       PreviousExams(),
                       if (Responsive.isMobile(context))
                         SizedBox(height: defaultPadding),
-                      if (Responsive.isMobile(context)) StorageDetails(),
+                      if (Responsive.isMobile(context)) StatusDataContainer(),
                     ],
                   ),
                 ),
@@ -47,7 +48,7 @@ class DashboardScreen extends StatelessWidget {
                 if (!Responsive.isMobile(context))
                   Expanded(
                     flex: 2,
-                    child: StorageDetails(),
+                    child: StatusDataContainer(),
                   ),
               ],
             ))

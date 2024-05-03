@@ -133,8 +133,16 @@ class ApiService {
     }
   }
   Future<dynamic> getQuestionPaperDetails(int examId) async {
-    //TODO:Change the link
     final response = await dio.get('assignment/submitted_papers/$examId');
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  Future<dynamic> fetchReport() async {
+    final response = await dio.get('assignment/report');
     if (response.statusCode == 200) {
       return response.data;
     } else {
