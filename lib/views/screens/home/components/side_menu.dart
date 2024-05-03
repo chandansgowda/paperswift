@@ -26,17 +26,10 @@ class SideMenu extends StatelessWidget {
             },
           ),
           DrawerListTile(
-            title: "Transaction",
+            title: "Reports",
             svgSrc: "assets/icons/menu_tran.svg",
             press: () {
               screenController.screenIndex.value=1;
-            },
-          ),
-          DrawerListTile(
-            title: "Task",
-            svgSrc: "assets/icons/menu_task.svg",
-            press: () {
-              screenController.screenIndex.value=2;
             },
           ),
           DrawerListTile(
@@ -44,20 +37,6 @@ class SideMenu extends StatelessWidget {
             svgSrc: "assets/icons/menu_doc.svg",
             press: () {
               screenController.screenIndex.value=3;
-            },
-          ),
-          DrawerListTile(
-            title: "Store",
-            svgSrc: "assets/icons/menu_store.svg",
-            press: () {
-              screenController.screenIndex.value=4;
-            },
-          ),
-          DrawerListTile(
-            title: "Notification",
-            svgSrc: "assets/icons/menu_notification.svg",
-            press: () {
-              screenController.screenIndex.value=5;
             },
           ),
           DrawerListTile(
@@ -76,7 +55,7 @@ class SideMenu extends StatelessWidget {
           ),
           DrawerListTile(
             title: "Logout",
-            svgSrc: "assets/icons/menu_setting.svg",
+            svgSrc: "assets/icons/menu_task.svg",
             press: () async {
              await authController.logout();
             },
