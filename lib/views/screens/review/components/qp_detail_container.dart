@@ -169,16 +169,31 @@ Row assignmentTile(BuildContext context, Course course, int courseIndex) {
               Expanded(
                 flex: 2,
                 child: GestureDetector(
-                  onTap: () async{
+                  onTap: () {
                     var data = json.encode({
                       "exam_id": examinationDetailController.examinationId,
                       "tracking_token": course.trackingToken,
                       "course_code": course.code
                     });
-                    print(data);
-                    await Get.find<MainController>().api.acceptPaper(data);
-                    await Get.find<QuestionPaperReviewController>().fetchData(examinationDetailController.examinationId);
-
+                    if(course.status=="Submitted"){
+                      showDialog(context: context, builder: (BuildContext context){
+                        return AlertDialog(title: Text("Are you sure?"),
+                        content: Text("Confirm before accepting the document"),
+                        actions: [
+                          ElevatedButton(onPressed: (){
+                            Get.back();
+                          }, child: Text("Cancel"),),
+                          ElevatedButton(onPressed: ()async{
+                            Get.back();
+                            await Get.find<MainController>().api.acceptPaper(data);
+                            await Get.find<QuestionPaperReviewController>().fetchData(examinationDetailController.examinationId);
+                          }, child: Text("Accept"))
+                        ],);
+                      });
+                    }
+                    else{
+                      Get.snackbar("Can't be accepted", "The paper is not in submitted state");
+                    }
                   },
                   child: Container(
                     decoration: BoxDecoration(
