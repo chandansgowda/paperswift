@@ -192,7 +192,7 @@ Row assignmentTile(BuildContext context, Course course, int courseIndex) {
                       });
                     }
                     else{
-                      Get.snackbar("Can't be accepted", "The paper is not in submitted state");
+                      Get.snackbar("Can't be accepted", "The new paper is not yet uploaded");
                     }
                   },
                   child: Container(
