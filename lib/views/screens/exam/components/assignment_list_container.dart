@@ -45,10 +45,10 @@ class AssignmentListContainer extends StatelessWidget {
                   DataColumn(
                     label: Text("Status"),
                   ),
-                  if (examinationDetailController
-                          .examinationDetail.assignmentStatus !=
-                      0)
-                    DataColumn(label: Text("Edit"))
+                  if(examinationDetailController.examinationDetail.assignmentStatus != 0)DataColumn(
+                    label: Text("Options"),
+                  ),
+
                 ],
                 rows: List.generate(
                   examinationDetailController
@@ -107,28 +107,49 @@ DataRow assignmentTile(Course course, int courseIndex) {
         ),
       ),
       DataCell(Text(course.status)),
-      if (examinationDetailController.examinationDetail.assignmentStatus != 0)
-        DataCell(GestureDetector(
-          onTap: (){
-            if(course.status!="Invite Rejected" && course.status!="NA"){
-              Get.snackbar("title", "You can't edit it");
-            }
-            else{
-              examinationDetailController.currentCourseIndex.value = courseIndex;
-            }
-          },
-            child: Container(
-          decoration: BoxDecoration(
-              color: course.status == "Invite Rejected" || course.status=="NA"
-                  ? Colors.red
-                  : Colors.transparent,
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: Colors.red)),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text("Edit"),
+      if(examinationDetailController.examinationDetail.assignmentStatus != 0)DataCell(PopupMenuButton<int>(
+        itemBuilder: (context) => [
+          // PopupMenuItem 1
+          PopupMenuItem(
+            onTap:  () {
+              if(course.status!="Invite Rejected" && course.status!="NA"){
+                Get.snackbar("title", "You can't edit it");
+              }
+              else{
+                examinationDetailController.currentCourseIndex.value = courseIndex;
+              }
+            },
+            value: 1,
+            // row with 2 children
+            child: Row(
+              children: [
+                Icon(Icons.edit),
+                SizedBox(
+                  width: 10,
+                ),
+                Text("Edit")
+              ],
+            ),
           ),
-        )))
+          // PopupMenuItem 2
+          if(course.status=="Request Pending" || course.status=="In Progress")PopupMenuItem(
+            onTap: () {
+              //TODO:Call the remind function
+            },
+            value: 2,
+            // row with two children
+            child: Row(
+              children: [
+                Icon(Icons.loop),
+                SizedBox(
+                  width: 10,
+                ),
+                Text("Remind")
+              ],
+            ),
+          ),
+        ],
+      ),),
     ],
   );
 }
