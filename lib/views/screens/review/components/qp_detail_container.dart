@@ -360,8 +360,14 @@ Row assignmentTile(BuildContext context, Course course, int courseIndex) {
             ),
             // PopupMenuItem 2
             if(course.status!="Submitted")PopupMenuItem(
-              onTap: () {
-                //TODO:Call the remind function
+              onTap: () async {
+                var data=json.encode({
+                  "assignment_id":course.assignmentId
+                });
+                var response=await Get.find<MainController>().api.sendReminder(data);
+                if(response==200){
+                  Get.snackbar("Mail sent", "The reminder mail sent");
+                }
               },
               value: 2,
               // row with two children

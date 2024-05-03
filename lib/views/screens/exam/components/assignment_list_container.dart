@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:paperswift/controllers/examination_detail_controller.dart';
+import 'package:paperswift/controllers/main_controller.dart';
 import 'package:paperswift/models/examination_detail.dart';
 import 'package:paperswift/views/screens/dashboard/components/deletethis1.dart';
 
@@ -133,8 +136,14 @@ DataRow assignmentTile(Course course, int courseIndex) {
           ),
           // PopupMenuItem 2
           if(course.status=="Request Pending" || course.status=="In Progress")PopupMenuItem(
-            onTap: () {
-              //TODO:Call the remind function
+            onTap: () async {
+              var data=json.encode({
+                "assignment_id":course.assignmentId
+              });
+              var response=await Get.find<MainController>().api.sendReminder(data);
+              if(response==200){
+                Get.snackbar("Mail sent", "The reminder mail sent");
+              }
             },
             value: 2,
             // row with two children

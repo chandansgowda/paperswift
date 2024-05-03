@@ -67,6 +67,7 @@ class Course {
   final String status;
   late RxString paperSetterName;
   late int paperSetterId;
+  late int assignmentId;
 
   Course({
     required this.code,
@@ -77,7 +78,8 @@ class Course {
     required this.sem,
     required this.status,
     required this.paperSetterName,
-    required this.paperSetterId
+    required this.paperSetterId,
+    required this.assignmentId,
   });
 
   factory Course.fromRawJson(String str) => Course.fromJson(json.decode(str));
@@ -93,6 +95,7 @@ class Course {
     sem: json["sem"],
     status: json["assignment_status"],
     paperSetterId: json["paper_setter_id"],
+    assignmentId: json["assignment_id"],
     paperSetterName: RxString(json["paper_setter_name"])
   );
 

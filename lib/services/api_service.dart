@@ -149,4 +149,13 @@ class ApiService {
       throw Exception('Failed to load data');
     }
   }
+
+  Future<dynamic> sendReminder(var data) async {
+    final response = await dio.post('assignment/send_reminder',data: data);
+    if (response.statusCode == 200) {
+      return response.statusCode;
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
 }
