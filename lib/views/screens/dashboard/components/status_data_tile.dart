@@ -10,10 +10,12 @@ class StatusDataTile extends StatelessWidget {
     required this.title,
     required this.svgSrc,
     required this.numOfFiles,
+    required this.color,
   }) : super(key: key);
 
   final String title, svgSrc;
   final int numOfFiles;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +33,7 @@ class StatusDataTile extends StatelessWidget {
           SizedBox(
             height: 20,
             width: 20,
-            child: SvgPicture.asset(svgSrc),
+            child: SvgPicture.asset(svgSrc,color: color,),
           ),
           Expanded(
             child: Padding(
