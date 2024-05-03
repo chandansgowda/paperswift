@@ -22,14 +22,13 @@ class AuthController extends GetxController {
     super.onInit();
   }
 
-  Future<void> login(String username, String email, String password, String otp) async {
+  Future<void> login(String username,String password,) async {
     try {
       isLoading.value = true;
 
       var body = json.encode({
         //TODO:Change it to dynamic
         'username': "admin",
-        'otp': "1222",
         'email': "admin@admin.com",
         'password': '123',
       });
