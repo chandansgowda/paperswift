@@ -28,9 +28,9 @@ class QuestionPaperReviewController extends GetxController{
     try {
       isLoading.value=true;
       dynamic response =await api.getQuestionPaperDetails(examId);
+      print(response);
       if(response.toString()!='{}') {
         questionPaperDetail = QuestionPaperDetail.fromJson(response);
-        print(questionPaperDetail.departments[0].name);
       }
       else{
         questionPaperDetail=QuestionPaperDetail(departments: [], count: 0);

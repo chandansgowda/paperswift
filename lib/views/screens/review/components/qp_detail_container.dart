@@ -210,7 +210,7 @@ Row assignmentTile(BuildContext context, Course course, int courseIndex) {
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text('Preview'),
+                        child: Text('Comment'),
                       ),
                     ),
                   ),
@@ -229,7 +229,12 @@ Row assignmentTile(BuildContext context, Course course, int courseIndex) {
         child: Center(
           child: GestureDetector(
             onTap: () async {
-              await launchLink(course.qpDocUrl);
+              if(course.qpDocUrl=="NA"){
+                Get.snackbar("Can't access", "The document is not yet uploaded");
+              }
+              else{
+                await launchLink(course.qpDocUrl);
+              }
             },
             child: Container(
               decoration: BoxDecoration(

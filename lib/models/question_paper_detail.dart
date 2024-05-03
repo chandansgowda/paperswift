@@ -83,7 +83,7 @@ class Course {
       assignedDate: DateTime.parse(json['assigned_date']),
       status: json['status'],
       submissionDate: json['submission_date'] != null ? DateTime.parse(json['submission_date']) : DateTime(0),
-      qpDocUrl: json['qp_doc_url'],
+      qpDocUrl: json['qp_doc_url']??"NA",
       trackingToken: json['tracking_token'],
       message: json['comment'] ?? "No latest review"
     );
