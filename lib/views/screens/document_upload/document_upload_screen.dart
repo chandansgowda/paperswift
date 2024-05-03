@@ -1,26 +1,11 @@
+import 'dart:html';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:paperswift/utils/constants.dart';
 import 'dart:html' as html;
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Document Upload',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: DocumentUploadScreen(),
-    );
-  }
-}
 
 class DocumentUploadScreen extends StatefulWidget {
   @override
@@ -29,6 +14,7 @@ class DocumentUploadScreen extends StatefulWidget {
 
 class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
   FilePickerResult? result;
+  String fileName = "";
 
   void _openFileExplorer() async {
     try {
@@ -37,12 +23,15 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
         type: FileType.custom,
         allowedExtensions: ['pdf', 'doc', 'docx', 'zip'],
       );
+      setState(() {
+        fileName = result!.names[0]!;
+      });
     } catch (e) {
       print("Error while picking the file: $e");
     }
   }
 
-  void _submitDocument(String courseCode, int examId,String token) async {
+  void _submitDocument(String courseCode, int examId, String token) async {
     if (result != null) {
       final dio = Dio();
       List<int> fileBytes = result!.files.single.bytes as List<int>;
@@ -51,14 +40,16 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
         'date': DateTime.now().toIso8601String(),
         'exam_id': 15,
         'course_code': '20CS710',
-        'tracking_token':token,
+        'tracking_token': token,
         // 'tracking_token':,
         'file': MultipartFile.fromBytes(
           fileBytes,
           filename: "fileName",
         ),
       });
-      final response = await dio.post('https://paperswiftsjcetest.pythonanywhere.com/assignment/upload_question_paper', data: formData);
+      final response = await dio.post(
+          'https://paperswiftsjcetest.pythonanywhere.com/assignment/upload_question_paper',
+          data: formData);
       print(formData);
       if (response.statusCode == 200) {
         print('File uploaded successfully');
@@ -89,25 +80,23 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
     String queryParamsString = parts.length > 1 ? parts[1] : '';
 
     // Parse the query parameters
-    Map<String, String> queryParams = {};
-    if (queryParamsString.isNotEmpty) {
-      List<String> pairs = queryParamsString.split('&');
-      for (String pair in pairs) {
-        List<String> keyValue = pair.split('=');
-        if (keyValue.length == 2) {
-          String key = Uri.decodeComponent(keyValue[0]);
-          String value = Uri.decodeComponent(keyValue[1]);
-          queryParams[key] = value;
-        }
-      }
-    }
-    String course_code=queryParams['course_code']!;
-    String course_name=queryParams['course_name']!;
-    String exam_id=queryParams['exam_id']!;
-    String token=queryParams['tracking_token']!;
-    String sem=queryParams['sem']!;
-
-
+    // Map<String, String> queryParams = {};
+    // if (queryParamsString.isNotEmpty) {
+    //   List<String> pairs = queryParamsString.split('&');
+    //   for (String pair in pairs) {
+    //     List<String> keyValue = pair.split('=');
+    //     if (keyValue.length == 2) {
+    //       String key = Uri.decodeComponent(keyValue[0]);
+    //       String value = Uri.decodeComponent(keyValue[1]);
+    //       queryParams[key] = value;
+    //     }
+    //   }
+    // }
+    // String course_code=queryParams['course_code']!;
+    // String course_name=queryParams['course_name']!;
+    // String exam_id=queryParams['exam_id']!;
+    // String token=queryParams['tracking_token']!;
+    // String sem=queryParams['sem']!;
     return Scaffold(
       appBar: AppBar(
         title: Text('Upload Document'),
@@ -134,9 +123,10 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
                       .map(
                         (item) => DataRow(
                           cells: [
-                            DataCell(Text(course_code)),
-                            DataCell(Text(course_name.replaceAll("+", " "))),
-                            DataCell(Text(sem)),
+                            DataCell(Text("course_code")),
+                            DataCell(
+                                Text("course_name.replaceAll(" + ", " ")")),
+                            DataCell(Text("sem")),
                           ],
                         ),
                       )
@@ -147,6 +137,24 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
             SizedBox(
               height: 50,
             ),
+            if (fileName != "")
+              Column(
+                children: [
+                  Container(
+                    height: 50,
+                    width: 500,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.white)),
+                    child: Center(
+                      child: Text("Selected file name : " + fileName),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                ],
+              ),
             GestureDetector(
               onTap: _openFileExplorer,
               child: Container(
@@ -171,7 +179,8 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
             SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                _submitDocument(course_code,int.parse(exam_id),token);
+                //_submitDocument("course_code", int.parse("exam_id"), "token");
+                window.close();
               },
               child: Container(
                 height: 50,
