@@ -61,14 +61,7 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> data = [
-      {
-        'course_code': 'CSE101',
-        'subject_name': 'Introduction to Computer Science',
-        'semester': '1'
-      }
-      // Add more data as needed
-    ];
+
     Uri uri = Uri.parse(html.window.location.href);
     String fragment = uri.fragment;
 
@@ -80,23 +73,23 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
     String queryParamsString = parts.length > 1 ? parts[1] : '';
 
     // Parse the query parameters
-    // Map<String, String> queryParams = {};
-    // if (queryParamsString.isNotEmpty) {
-    //   List<String> pairs = queryParamsString.split('&');
-    //   for (String pair in pairs) {
-    //     List<String> keyValue = pair.split('=');
-    //     if (keyValue.length == 2) {
-    //       String key = Uri.decodeComponent(keyValue[0]);
-    //       String value = Uri.decodeComponent(keyValue[1]);
-    //       queryParams[key] = value;
-    //     }
-    //   }
-    // }
-    // String course_code=queryParams['course_code']!;
-    // String course_name=queryParams['course_name']!;
-    // String exam_id=queryParams['exam_id']!;
-    // String token=queryParams['tracking_token']!;
-    // String sem=queryParams['sem']!;
+    Map<String, String> queryParams = {};
+    if (queryParamsString.isNotEmpty) {
+      List<String> pairs = queryParamsString.split('&');
+      for (String pair in pairs) {
+        List<String> keyValue = pair.split('=');
+        if (keyValue.length == 2) {
+          String key = Uri.decodeComponent(keyValue[0]);
+          String value = Uri.decodeComponent(keyValue[1]);
+          queryParams[key] = value;
+        }
+      }
+    }
+    String course_code=queryParams['course_code']!;
+    String course_name=queryParams['course_name']!;
+    String exam_id=queryParams['exam_id']!;
+    String token=queryParams['tracking_token']!;
+    String sem=queryParams['sem']!;
     return Scaffold(
       appBar: AppBar(
         title: Text('Upload Document'),
@@ -119,18 +112,14 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
                     DataColumn(label: Text('Subject Name')),
                     DataColumn(label: Text('Semester')),
                   ],
-                  rows: data
-                      .map(
-                        (item) => DataRow(
+                  rows: [DataRow(
                           cells: [
-                            DataCell(Text("course_code")),
+                            DataCell(Text(course_code)),
                             DataCell(
-                                Text("course_name.replaceAll(" + ", " ")")),
-                            DataCell(Text("sem")),
+                                Text(course_name.replaceAll(" + ", " "))),
+                            DataCell(Text(sem)),
                           ],
-                        ),
-                      )
-                      .toList(),
+                        ),]
                 ),
               ),
             ),
@@ -179,8 +168,8 @@ class _DocumentUploadScreenState extends State<DocumentUploadScreen> {
             SizedBox(height: 20),
             GestureDetector(
               onTap: () {
-                //_submitDocument("course_code", int.parse("exam_id"), "token");
-                window.close();
+                _submitDocument(course_code, int.parse(exam_id), token);
+                // window.close();
               },
               child: Container(
                 height: 50,
