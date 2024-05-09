@@ -12,6 +12,7 @@ class ExaminationDetailController extends GetxController{
   RxInt currentDepartmentIndex=0.obs;
   //TODO:Change the initial value
   RxInt currentCourseIndex=500.obs;
+  RxString currentCourseCode="".obs;
   late int examinationId;
   RxBool isLoading=false.obs;
 
@@ -30,9 +31,8 @@ class ExaminationDetailController extends GetxController{
       isLoading.value=true;
       dynamic response =await api.getExaminationDetails(examId);
       examinationDetail=ExaminationDetail.fromJson(response);
-      print(examinationDetail.departments[0].name);
-
     } catch (e) {
+      // print(e);
       throw Exception(e);
     }
     finally{

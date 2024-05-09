@@ -91,6 +91,7 @@ DataRow assignmentTile(Course course, int courseIndex) {
           onTap: () {
             if(examinationDetailController.examinationDetail.assignmentStatus==0){
               examinationDetailController.currentCourseIndex.value = courseIndex;
+              examinationDetailController.currentCourseCode.value=course.code;
             }
           },
           child: Container(
@@ -120,6 +121,7 @@ DataRow assignmentTile(Course course, int courseIndex) {
               }
               else{
                 examinationDetailController.currentCourseIndex.value = courseIndex;
+                examinationDetailController.currentCourseCode.value = course.code;
               }
             },
             value: 1,

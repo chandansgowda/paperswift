@@ -72,7 +72,7 @@ class ApiService {
   }
 
   Future<dynamic> getExaminationDetails(int examId) async {
-    final response = await dio.get('management/get_dept_and_teachers_for_exam/$examId');
+    final response = await dio.get('management/get_teachers_and_courses_for_exam/$examId');
     if (response.statusCode == 200) {
       return response.data;
     } else {

@@ -13,48 +13,38 @@ class ExaminationDetail {
     required this.assignmentStatus,
   });
 
-  factory ExaminationDetail.fromRawJson(String str) => ExaminationDetail.fromJson(json.decode(str));
+  factory ExaminationDetail.fromJson(Map<String, dynamic> json) {
+    final List<Department> departments = [];
+    json['departments'].forEach((key, value) {
+      departments.add(Department.fromJson({key:value}));
+    });
 
-  String toRawJson() => json.encode(toJson());
-
-  factory ExaminationDetail.fromJson(Map<String, dynamic> json) => ExaminationDetail(
-    departments: List<Department>.from(json["departments"].map((x) => Department.fromJson(x))),
-    count: json["count"],
-    assignmentStatus: json["assignment_status"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "departments": List<dynamic>.from(departments.map((x) => x.toJson())),
-    "count": count,
-    "assignment_status": assignmentStatus,
-  };
+    return ExaminationDetail(
+      departments: departments,
+      count: json["count"],
+      assignmentStatus: json["assignment_status"],
+    );
+  }
 }
 
 class Department {
   final String name;
-  final List<PaperSetter> paperSetters;
   final List<Course> courses;
 
   Department({
-    required this.paperSetters,
     required this.courses,
     required this.name,
   });
 
   factory Department.fromRawJson(String str) => Department.fromJson(json.decode(str));
 
-  String toRawJson() => json.encode(toJson());
 
   factory Department.fromJson(Map<String, dynamic> json) => Department(
     name: json.keys.first,
-    paperSetters: List<PaperSetter>.from(json[json.keys.first]["paper_setters"].map((x) => PaperSetter.fromJson(x))),
-    courses: List<Course>.from(json[json.keys.first]["courses"].map((x) => Course.fromJson(x))),
+    courses: List<Course>.from(json[json.keys.first].map((x) => Course.fromJson(x))),
   );
 
-  Map<String, dynamic> toJson() => {
-    "paper_setters": List<dynamic>.from(paperSetters.map((x) => x.toJson())),
-    "courses": List<dynamic>.from(courses.map((x) => x.toJson())),
-  };
+
 }
 
 class Course {
@@ -68,6 +58,7 @@ class Course {
   late RxString paperSetterName;
   late int paperSetterId;
   late int assignmentId;
+  final List<PaperSetter> paperSetters;
 
   Course({
     required this.code,
@@ -80,6 +71,7 @@ class Course {
     required this.paperSetterName,
     required this.paperSetterId,
     required this.assignmentId,
+    required this.paperSetters
   });
 
   factory Course.fromRawJson(String str) => Course.fromJson(json.decode(str));
@@ -87,16 +79,17 @@ class Course {
   String toRawJson() => json.encode(toJson());
 
   factory Course.fromJson(Map<String, dynamic> json) => Course(
-    code: json["code"],
-    name: json["name"],
-    scheme: json["scheme"],
-    syllabusDocUrl: json["syllabus_doc_url"],
-    department: json["department"],
-    sem: json["sem"],
-    status: json["assignment_status"],
-    paperSetterId: json["paper_setter_id"],
-    assignmentId: json["assignment_id"],
-    paperSetterName: RxString(json["paper_setter_name"])
+    code: json["course"]["code"],
+    name: json["course"]["name"],
+    scheme: json["course"]["scheme"],
+    syllabusDocUrl: json["course"]["syllabus_doc_url"],
+    department: json["course"]["department"],
+    sem: json["course"]["sem"],
+    status: json["course"]["assignment_status"],
+    paperSetterId: json["course"]["paper_setter_id"],
+    assignmentId: json["course"]["assignment_id"],
+    paperSetterName: RxString(json["course"]["paper_setter_name"]),
+    paperSetters: List<PaperSetter>.from(json["paper_setters"].map((x) => PaperSetter.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {

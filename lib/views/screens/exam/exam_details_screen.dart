@@ -199,6 +199,7 @@ class DepartmentTileGridView extends StatelessWidget {
                 examinationDetailController.currentDepartmentIndex.value =
                     index;
                 examinationDetailController.currentCourseIndex.value = 500;
+                examinationDetailController.currentCourseCode.value="";
               },
               child: Obx(() => DepartmentTile(
                   title: examinationDetailController
