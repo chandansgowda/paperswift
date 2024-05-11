@@ -29,7 +29,7 @@ class AssignmentListContainer extends StatelessWidget {
             "Assignment Table",
             style: Theme.of(context).textTheme.titleMedium,
           ),
-          Obx(
+          examinationDetailController.examinationDetail.departments.isEmpty?Center(child: Text("No data"),):Obx(
             () => SizedBox(
               width: double.infinity,
               child: DataTable(
@@ -69,8 +69,7 @@ class AssignmentListContainer extends StatelessWidget {
                       index),
                 ),
               ),
-            ),
-          )
+            ),),
         ],
       ),
     );
