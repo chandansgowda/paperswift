@@ -11,8 +11,8 @@ class DegreesDetailsController extends GetxController{
   late ApiService api;
   late FlutterSecureStorage storage;
 
-  late RxString selectedDegree="".obs;
-  late RxInt selectedScheme=0.obs;
+  late String selectedDegree="";
+  late int selectedScheme=0;
   late RxInt selectedSchemeId=0.obs;
   TextEditingController semController=TextEditingController();
   RxString deadlineDate="${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}".obs;
@@ -27,15 +27,24 @@ class DegreesDetailsController extends GetxController{
     await fetchData();
     super.onInit();
   }
-
+Future<void> selectDegree(String newValue)async {
+    selectedDegree=newValue;
+    selectedScheme=degreesDetail.degrees[degreesDetail.degrees.indexWhere((element) => element.name==newValue)].schemes[0].year;
+    update();
+}
+  Future<void> selectScheme(int newValue)async {
+    selectedScheme=newValue;
+    update();
+  }
   Future<void> fetchData() async {
     try {
       dynamic response =await api.getDegreesDetails();
       degreesDetail=DegreesDetail.fromJson(response);
-      selectedDegree.value=degreesDetail.degrees[0].name;
-      selectedScheme.value=degreesDetail.degrees[0].schemes[0].year;
+      selectedDegree=degreesDetail.degrees[0].name;
+      selectedScheme=degreesDetail.degrees[0].schemes[0].year;
       selectedSchemeId.value=degreesDetail.degrees[0].schemes[0].id;
       print(degreesDetail.degrees[0].name);
+      update();
     } catch (e) {
       throw Exception(e);
     }

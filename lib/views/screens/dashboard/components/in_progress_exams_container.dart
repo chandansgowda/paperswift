@@ -68,27 +68,25 @@ class InProgressExamsContainer extends StatelessWidget {
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Text("Degree"),
-                                        Obx(() => DropdownButton(
-                                            value: degreesDetailsController
-                                                .selectedDegree.value,
-                                            items: degreesDetailsController
+                                        GetBuilder<DegreesDetailsController>(builder: (controller)=>DropdownButton(
+                                            value: controller
+                                                .selectedDegree,
+                                            items: controller
                                                 .degreesDetail.degrees
                                                 .map((e) => e.name)
                                                 .toList()
                                                 .map((course) =>
-                                                    DropdownMenuItem(
-                                                        value: course,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(course),
-                                                        )))
+                                                DropdownMenuItem(
+                                                    value: course,
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets
+                                                          .all(8.0),
+                                                      child: Text(course),
+                                                    )))
                                                 .toList(),
                                             onChanged: (newValue) {
-                                              degreesDetailsController
-                                                  .selectedDegree
-                                                  .value = newValue!;
+                                              controller.selectDegree(newValue!);
                                             }))
                                       ],
                                     ),
@@ -97,57 +95,55 @@ class InProgressExamsContainer extends StatelessWidget {
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
                                         Text("Scheme"),
-                                        Obx(() => DropdownButton(
-                                            value: degreesDetailsController
+                                        GetBuilder<DegreesDetailsController>(builder: (controller)=>DropdownButton(
+                                            value: controller
                                                 .selectedScheme
                                                 .toString(),
-                                            items: degreesDetailsController
+                                            items: controller
                                                 .degreesDetail
-                                                .degrees[degreesDetailsController
-                                                    .degreesDetail.degrees
-                                                    .indexWhere((element) =>
-                                                        element.name ==
-                                                        degreesDetailsController
-                                                            .selectedDegree
-                                                            .value)]
+                                                .degrees[controller
+                                                .degreesDetail.degrees
+                                                .indexWhere((element) =>
+                                            element.name ==
+                                                controller
+                                                    .selectedDegree
+                                            )]
                                                 .schemes
                                                 .map((e) => e.year.toString())
                                                 .toList()
                                                 .map((scheme) =>
-                                                    DropdownMenuItem(
-                                                        value: scheme,
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Text(scheme),
-                                                        )))
+                                                DropdownMenuItem(
+                                                    value: scheme,
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets
+                                                          .all(8.0),
+                                                      child: Text(scheme),
+                                                    )))
                                                 .toList(),
                                             onChanged: (newValue) {
-                                              degreesDetailsController
-                                                  .selectedScheme
-                                                  .value = newValue as int;
+                                              controller.selectScheme(int.parse(newValue!));
                                               int degreeIndex =
-                                                  degreesDetailsController
-                                                      .degreesDetail.degrees
-                                                      .indexWhere((element) =>
-                                                          element.name ==
-                                                          degreesDetailsController
-                                                              .selectedDegree
-                                                              .value);
+                                              controller
+                                                  .degreesDetail.degrees
+                                                  .indexWhere((element) =>
+                                              element.name ==
+                                                  controller
+                                                      .selectedDegree
+                                              );
                                               int schemeIndex =
-                                                  degreesDetailsController
-                                                      .degreesDetail
-                                                      .degrees[degreeIndex]
-                                                      .schemes
-                                                      .indexWhere((element) =>
-                                                          element.year ==
-                                                          degreesDetailsController
-                                                              .selectedScheme
-                                                              .value);
-                                              degreesDetailsController
-                                                      .selectedSchemeId.value =
-                                                  degreesDetailsController
+                                              controller
+                                                  .degreesDetail
+                                                  .degrees[degreeIndex]
+                                                  .schemes
+                                                  .indexWhere((element) =>
+                                              element.year ==
+                                                  controller
+                                                      .selectedScheme
+                                              );
+                                              controller
+                                                  .selectedSchemeId.value =
+                                                  controller
                                                       .degreesDetail
                                                       .degrees[degreeIndex]
                                                       .schemes[schemeIndex]
@@ -260,7 +256,7 @@ class InProgressExamsContainer extends StatelessWidget {
                                             "is_exam_completed": false,
                                             "description": "Loreum Ipsum",
                                             "degree": degreesDetailsController
-                                                .selectedDegree.value,
+                                                .selectedDegree,
                                             "scheme": degreesDetailsController
                                                 .selectedSchemeId.value
                                           });
